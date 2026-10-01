@@ -7,8 +7,80 @@ editor: visual
 Foundations of Data Science 
 Wrangling - systematic pipeline of reading, inspecting, parsing, and shaping data
 
-# Project Initialisation and Workspace architecture 
+Project Initialisation and Workspace architecture 
+
+Forking and Cloning a GitHub Repository
+
+Forking (Connected Copy creates a copy of the repository in your GitHub account. This allows you to freely experiment with changes without affecting the original project.
+
+Cloning (Standalone) creates a local copy of the repository on your computer. This allows you to work on the project offline and make changes locally before pushing them back to the remote repository.
+
 ```{r}
+ 
+#usethis::use_git()
 
 ```
+
+Workflow:
+On GitHub: Copy URL > In R Studio: File > New Project > Version Control > Git > Paste URL > Name Project > Create Project
+Once Project cloned, copy files to YOUR Own Project folder and commit changes to GitHub
+
+```{r}
+
+#remove original connection to source GitHub repository
+gert::git_remote_remove("origin")
+
+#push fresh copy to personal github 
+usethis::use_github()
+
+#update .gitignore file to ignore files and folders that should not be tracked by Git
+```
+
+Memory Allocation & Environmental Hygiene 
+Disk(Permanent Storage) vs Session Environment (RAM/Computer Memory)
+# purge .RData
+```{r}
+#House keeping
+## Inventory every active object currently residing in session RAM
+objects()
+
+## Purge global environment
+rm(list = ls())
+
+## Confirm that global session memory is completely vacant 
+objects()
+
+unlink("~/.RData") #delete .RData file from disk to prevent automatic loading of objects into session memory on RStudio startup")
+
+```
+
+Ingesting Data into R 
+CSV (Comma-Separated Values)
+TSV (Tab-separated Values) = with spaces \t
+Excel (Spreadsheets, Metadata formatting) 
+```{r}
+#Load primary data science framework and Excel import library
+library(tidyverse)
+library(readxl)
+library(here)
+```
+
+```{r}
+#Loading .CSV plain text file
+benthic_cover <- read_csv(here::here("data/reef_cover_log.csv"))
+
+#Loading .TXT/.TSV tab-separated text files
+acoustic_stream <- read_tsv(here::here("data/acoustic_telemetry_stream.txt"))
+
+#Loading .XLSX spread sheet files
+fisheries_annual <- read_excel(here::here("data/fish_catch_data.xlsx"), sheet = "Commercial_2026")
+
+
+```
+
+
+
+
+
+
 
