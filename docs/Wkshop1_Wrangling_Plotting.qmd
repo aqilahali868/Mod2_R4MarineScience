@@ -28,10 +28,10 @@ Once Project cloned, copy files to YOUR Own Project folder and commit changes to
 ```{r}
 
 #remove original connection to source GitHub repository
-gert::git_remote_remove("origin")
+#gert::git_remote_remove("origin")
 
 #push fresh copy to personal github 
-usethis::use_github()
+#usethis::use_github()
 
 #update .gitignore file to ignore files and folders that should not be tracked by Git
 ```
@@ -144,17 +144,244 @@ summary(penguins) #generate an exploratory summary matrix
 ```
 
 Foundational Grammar: Slicing, Filtering, Sorting & Transforming
+dplyr package : easy data manipulation 
+input dataframe as primary argument > outputs modified tibble
 ```{r}
+#Vertical slice specific morphometric variables by explicit name
+morphology_metric <- select(penguins, 
+                            species, 
+                            bill_length_mm, 
+                            bill_depth_mm, 
+                            body_mass_g)
+
+glimpse(morphology_metric)
+```
+
+Isolating Attribute with function: select() *targets variables vertically
+```{r}
+#Retain a continuous block of attributes using the colon operator
+spatial_block <- select(penguins, species:island)
+spatial_block #only top 10 rows printed
+
+#Discard logistics tracking attributes while preserving everything else
+#Use minus sign 
+clean_scientific_fields <- select(penguins, -year) #specify which "columns" to remove
+clean_scientific_fields
+
+```
+
+Sifting rows with function: filter() *targets variables horizontally
+```{r}
+#Isolate observations belonging to a single categorical target group 
+adelie_cohort <- filter(penguins, species == "Adelie")
+adelie_cohort
+
+#Sift out individuals using continuous numerical boundary thresholds (ranges)
+#Preserve only large penguins with mass >4500g
+heavy_penguins <- filter(penguins, body_mass_g >4500)
+heavy_penguins
+
+#Combine multiple conditional parameters across separate attributes
+#Preserve records matching Gentoo penguins samples explicitly on Biscoe Island
+biscoe_gentoo <- filter(penguins, species == "Gentoo", island == "Biscoe")
+biscoe_gentoo
+
+#Sift records matching multiple targeting flags within an explicit set
+#Filtering for multiple levels in a variable
+sub_islands <- filter(penguins, island %in% c("Dream", "Torgersen"))
+sub_islands
+
+```
+
+Ordering Sequences with function: arrange() *alter sorting configuration ofg rows within dataframe without changing individual cell values
+#useful for assessing size hierarchies or chronological ordering long-term environmental observations
+```{r}
+#Sort penguins by ascending body mass (Smallest first * default)
+lightest_first <- arrange(penguins, body_mass_g)
+lightest_first
+
+#Sort penguins in descending sequence
+#Use dec() layout wrapper
+heaviest_first <- arrange(penguins, desc(body_mass_g))
+heaviest_first
+
+#Execute nested sorting criteria: Group by species, then sort by descending bill length
+stratified_morphology <- arrange(penguins, species, desc(bill_length_mm))
+stratified_morphology
+```
+
+Introducing the Pipe |> (Base R) or %>% (Tidyverse, magrittr package)
+
+#Logic of the Pipe |>
+- Without a pipe: read code "inside-out". 
+data in middle > mutate() > wrap using filter() > final wrap using select()
+
+- With a pipe: read code from left-right or top-bottom. 
+data > filter > mutate to create new column > select columns needed
+
+Instead of:
+```{r}
+
+penguins_subset <- mutate(penguins, bill_ratio = bill_length_mm / bill_depth_mm)
+penguins_final <- filter(penguins_subset, species == "Adelie")
+
+```
+
+Write:
+```{r}
+
+penguins_final <- penguins |>
+  mutate(bill_ration = bill_length_mm / bill_depth_mm) |>
+  filter(species == "Adelie")
+
+```
+
+Computing New Attributes with function: mutate() * modify existing attribute or appemd entirely new vectors to dataframe
+Calculating new variables based on existing raw data
+E.g., standard geometric conversions or compute morphological ratios
+```{r}
+
+# Calculate a new morphological ratio in our environment
+penguin_ratios <- penguins  |> 
+  mutate(body_mass_kg = body_mass_g / 1000,   # Convert grams to kilograms
+         bill_ratio = bill_length_mm / bill_depth_mm  # Bill ratio
+  )
+
+# View your newly engineered variables appended to the far-right columns
+glimpse(penguin_ratios)
+
+```
+Data Aggregation and Ecological Summarisation 
+Isolating and sorting individual rows / columns = data cleaning
+Extracting meaningful biological data e.g., morphological allometry varies by species or island group = compress observations into population summary metrics
+
+#Dual-layered combination of functions: 
+group_by() - does not alter appearance of table 
+summarise() - calculate targeted statistical summary tibble
+```{r}
+# Grouping our active memory penguins by species
+grouped_penguins <- group_by(penguins, species)
+grouped_penguins
+
+# Notice that the table looks identical, but metadata notes 'Groups: species [3]'
+
+# Collapsing the buckets into explicit summary metrics
+species_mass_summary <- summarise(grouped_penguins,
+  mean_mass_g = mean(body_mass_g)
+)
+species_mass_summary #NA - missing value trap(MVT) * a single NA disrupt mathematical aggregation functions e.g., mean(), sd(), sum(), only returning NA
+
+#Override NA block = explicitly declare that missing cells should be dropped during calculation 
+#using magrittr pipe |> , to wrangle data, avoiding MVT
+
+#Overcoming MVT using function na.rm = TRUE (NA removal)
+biological_signal <- penguins %>%
+  group_by(species, sex) %>% 
+  summarise(
+    sample_size = n(), # Count total individuals per category 
+    mean_mass_g = mean(body_mass_g, na.rm = TRUE), #ignoring missing cells
+    sd_mass_g = sd(body_mass_g, na.rm = TRUE) #SD calculation
+  )
+biological_signal #clean overview of sexual dimorphism and species variations across the study area
 
 
 ```
 
 
-Isolating Attribute with function: select()
+Integrating Data Grammar with Visual Diagnostics in .qmd
+
+- Data Layer - source dataset table object e.g., ggplot(data = ..)
+- Aesthetic Mapping - define variables mapped to axes e.g., colours, shapes, size etc.
+- Geometric layer - define visual shape values represent e.g, points, bars, lines, boxplots
+
+
+Wrangling and Plotting in Parallel 
+
+ Challenge: Visualising Body Size and Shape 
+  - Summary Table 
+  - Visualisation 
 ```{r}
+
+data <- penguins %>%
+  group_by(species, island) %>% 
+  summarise(
+    sample_size = n(), # Count total individuals per category 
+    mean_mass_g = mean(body_mass_g, na.rm = TRUE), #ignoring missing cells
+    sd_mass_g = sd(body_mass_g, na.rm = TRUE) #SD calculation
+  )
+data 
+
+ggplot(data = penguins) +   
+  geom_boxplot(mapping = aes(x = species, y = body_mass_g, fill = island))
 
 ```
 
+  
+Piping Directly to Visualisation * efficient workflow
+
+Visualising Mean Trends with Uncertainty
+Pipe |> or %>% grouped data directly into a plot and use geom_errorbar() to represent spread of data 
+```{r}
+#Pipe directly from aggregation to plotting with error bars
+
+mass_compare_plot <- penguins |> 
+  group_by(species, island) |>
+  summarise(
+    mean_mass = mean(body_mass_g, na.rm = TRUE), 
+    sd_mass = sd(body_mass_g, na.rm = TRUE), 
+    n = n(),
+    .groups = "drop"
+  ) |>
+ggplot(aes(x = species, y = mean_mass, colour = island))+
+  geom_point(size = 2)+
+  geom_errorbar(aes(ymin = mean_mass - sd_mass, 
+                    ymax = mean_mass + sd_mass), 
+                width = 0.2)+
+  labs(title = "Mean Body Mass by Species and Island",
+       subtitle = "Error bars represent standard deviation", 
+       x = "Species",
+       y = "Mean Body MAss (g)")+
+  theme_minimal()
+
+mass_compare_plot
+
+```
+  Challenge:
+In your .qmd template, try creating a new plot. Experiment with swapping sd_mass (standard deviation) for standard error—you will need to divide your sd by the square root of n (sd / sqrt(n)). See how that changes your visual interpretation of the data uncertainty. Present the summary table alongside the associated figure and write down your thoughts on the underlying ecological story that the data are telling.
+
+Saving, Exporting and Version Milestones
+```{r}
+#Create output directories if they do not exist
+#if (!dir.exists("outputs/figures")) dir.create("outputs/figures") # folder for figs
+#if (!dir.exists("outputs/tables")) dir.create("outputs/tables") # folder for tables
+#if (!dir.exists("Rdata")) dir.create("Rdata") # folder for Rdata objects
+
+```
+
+
+TABLES
+- Universal CSV text file : collaborating outside of R
+- Native R Binary RDS object: preserves vector configuration for R
+```{r}
+# 1. Exporting our collapsed summary table as a universal flat text file
+write_csv(biological_signal, "output/penguin_species_mass_summary.csv")
+
+# 2. Saving as a native R binary file
+saveRDS(biological_signal, "output/penguin_species_mass_summary.rds")
+
+
+```
+
+FIGURES
+- ggplot2 function: ggsave()
+
+```{r}
+ggsave("output/mass_compare_plot.png", 
+       plot = mass_compare_plot, 
+       width = 120, 
+       height = 120, 
+       units = "mm")
+```
 
 
 
