@@ -67,16 +67,95 @@ library(here)
 
 ```{r}
 #Loading .CSV plain text file
-benthic_cover <- read_csv(here::here("data/reef_cover_log.csv"))
+benthic_cover <- read_csv(here::here("data/workshop1/reef_cover_log.csv"))
 
 #Loading .TXT/.TSV tab-separated text files
-acoustic_stream <- read_tsv(here::here("data/acoustic_telemetry_stream.txt"))
+acoustic_stream <- read_tsv(here::here("data/workshop1/acoustic_telemetry_stream.txt"))
 
 #Loading .XLSX spread sheet files
-fisheries_annual <- read_excel(here::here("data/fish_catch_data.xlsx"), sheet = "Commercial_2026")
+fisheries_annual <- read_excel(here::here("data/workshop1/fish_catch_data.xlsx"), sheet = "Commercial_2026")
+
+```
+
+Data cleaning: Loading excel data sheets with comments/field notes at top: end up as column headers
+```{r}
+
+#Read in mangrove_data
+
+mangrove_data <- read_csv(file = here::here("data/workshop1/mangrove_survey_raw.csv"))
+
+#Warning pops up
+```
+
+```{r}
+# Use args within read_csv to skip headers and declare missing flags
+
+mangrove_data <- read_csv(here::here("data/workshop1/mangrove_survey_raw.csv"), 
+                           skip = 5, #skip first 5 lines of field notes
+                           na = c(".", "NA", "9999", "ND", "blank")) #convert known text alts to true NA
+mangrove_data #fixed data: now shows appropriate column headers and missing values
+             
+```
+
+Data Frame Architecture: Tibbles(tidyverse not base R) vs Legacy(Base R) Tables
+Functional Behaviour:
+#Console Output
+Legacy Base R data.frame - print EVERY column & row
+Modern Tidyverse tibble - print only first 10 rows and columns that fit on screen
+
+#Vector Verification 
+Base R - print only text names(columns), requires different function to view variables e.g., str() or class()
+Tidy tibble - print column names and variable vector type e.g., <chr>, <dbl>, <fct>
+
+#Partial Matching Trap
+Base R - does not require EXACT column name, allows salinity_ppt = df$sal, i.e., errors
+Tidy tibble - requires exact column name to be used
+
+```{r}
+#Force a modern tibble to degrade into a legacy base R dataframe structure 
+
+benthic_cover_df <- as.data.frame(benthic_cover)
+ 
+
+#Print old-style dataframe structure
+print(benthic_cover_df) #print shows all columns and rows, no vector type info, allows partial matching
+
+#Tibble alternative
+print(benthic_cover) #print shows vector types
+
+                           
+```
+
+Wrangling Out Ecological Signals Using Palmer Penguins 
+(Multi-species, morphological data, Antarctica)
+```{r}
+#Install data package if not done already 
+# install.packages("palmerpenguins")
+
+#Load dataset into active memory
+library(palmerpenguins)
+data("penguins")
+
+#Examine structure of dataset 
+glimpse(penguins) #tidyverse version from dplyr package
+str(penguins) #base R
+summary(penguins) #generate an exploratory summary matrix
+
+```
+
+Foundational Grammar: Slicing, Filtering, Sorting & Transforming
+```{r}
 
 
 ```
+
+
+Isolating Attribute with function: select()
+```{r}
+
+```
+
+
 
 
 
