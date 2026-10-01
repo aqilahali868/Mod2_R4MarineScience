@@ -4,3 +4,11 @@ format: html
 editor: visual
 ---
 
+Foundations of Data Science 
+Wrangling - systematic pipeline of reading, inspecting, parsing, and shaping data
+
+# Project Initialisation and Workspace architecture 
+```{r}
+
+```
+
