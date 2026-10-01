@@ -8,16 +8,17 @@
 .quarto
 
 # Extensions to ignore
-*.html
-*.png
-*.jpg
-*.jpeg
-*.eps
-*.pdf
-*.bmp
-*.svg
-*.tiff
+.html
+.png
+.jpg
+.jpeg
+.eps
+.pdf
+.bmp
+.svg
+.tiff
 *.Rproj
+
 
 # Folders to ignore
 archive/
@@ -28,3 +29,5 @@ test/
 *archive
 .httr-oauth
 .quarto
+quarto-html
+bootstrap
