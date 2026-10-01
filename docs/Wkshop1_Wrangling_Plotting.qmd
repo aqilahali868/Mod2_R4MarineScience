@@ -4,10 +4,9 @@ format: html
 editor: visual
 ---
 
-Foundations of Data Science 
-Wrangling - systematic pipeline of reading, inspecting, parsing, and shaping data
+Foundations of Data Science Wrangling - systematic pipeline of reading, inspecting, parsing, and shaping data
 
-Project Initialisation and Workspace architecture 
+Project Initialisation and Workspace architecture
 
 Forking and Cloning a GitHub Repository
 
@@ -21,9 +20,7 @@ Cloning (Standalone) creates a local copy of the repository on your computer. Th
 
 ```
 
-Workflow:
-On GitHub: Copy URL > In R Studio: File > New Project > Version Control > Git > Paste URL > Name Project > Create Project
-Once Project cloned, copy files to YOUR Own Project folder and commit changes to GitHub
+Workflow: On GitHub: Copy URL \> In R Studio: File \> New Project \> Version Control \> Git \> Paste URL \> Name Project \> Create Project Once Project cloned, copy files to YOUR Own Project folder and commit changes to GitHub
 
 ```{r}
 
@@ -36,9 +33,8 @@ Once Project cloned, copy files to YOUR Own Project folder and commit changes to
 #update .gitignore file to ignore files and folders that should not be tracked by Git
 ```
 
-Memory Allocation & Environmental Hygiene 
-Disk(Permanent Storage) vs Session Environment (RAM/Computer Memory)
-# purge .RData
+Memory Allocation & Environmental Hygiene Disk(Permanent Storage) vs Session Environment (RAM/Computer Memory) \# purge .RData
+
 ```{r}
 #House keeping
 ## Inventory every active object currently residing in session RAM
@@ -54,10 +50,9 @@ unlink("~/.RData") #delete .RData file from disk to prevent automatic loading of
 
 ```
 
-Ingesting Data into R 
-CSV (Comma-Separated Values)
-TSV (Tab-separated Values) = with spaces \t
-Excel (Spreadsheets, Metadata formatting) 
+Ingesting Data into R CSV (Comma-Separated Values) TSV (Tab-separated Values) = with spaces \t
+Excel (Spreadsheets, Metadata formatting)
+
 ```{r}
 #Load primary data science framework and Excel import library
 library(tidyverse)
@@ -78,6 +73,7 @@ fisheries_annual <- read_excel(here::here("data/workshop1/fish_catch_data.xlsx")
 ```
 
 Data cleaning: Loading excel data sheets with comments/field notes at top: end up as column headers
+
 ```{r}
 
 #Read in mangrove_data
@@ -97,19 +93,11 @@ mangrove_data #fixed data: now shows appropriate column headers and missing valu
              
 ```
 
-Data Frame Architecture: Tibbles(tidyverse not base R) vs Legacy(Base R) Tables
-Functional Behaviour:
-#Console Output
-Legacy Base R data.frame - print EVERY column & row
-Modern Tidyverse tibble - print only first 10 rows and columns that fit on screen
+Data Frame Architecture: Tibbles(tidyverse not base R) vs Legacy(Base R) Tables Functional Behaviour: #Console Output Legacy Base R data.frame - print EVERY column & row Modern Tidyverse tibble - print only first 10 rows and columns that fit on screen
 
-#Vector Verification 
-Base R - print only text names(columns), requires different function to view variables e.g., str() or class()
-Tidy tibble - print column names and variable vector type e.g., <chr>, <dbl>, <fct>
+#Vector Verification Base R - print only text names(columns), requires different function to view variables e.g., str() or class() Tidy tibble - print column names and variable vector type e.g., <chr>, <dbl>, <fct>
 
-#Partial Matching Trap
-Base R - does not require EXACT column name, allows salinity_ppt = df$sal, i.e., errors
-Tidy tibble - requires exact column name to be used
+#Partial Matching Trap Base R - does not require EXACT column name, allows salinity_ppt = df\$sal, i.e., errors Tidy tibble - requires exact column name to be used
 
 ```{r}
 #Force a modern tibble to degrade into a legacy base R dataframe structure 
@@ -126,8 +114,8 @@ print(benthic_cover) #print shows vector types
                            
 ```
 
-Wrangling Out Ecological Signals Using Palmer Penguins 
-(Multi-species, morphological data, Antarctica)
+Wrangling Out Ecological Signals Using Palmer Penguins (Multi-species, morphological data, Antarctica)
+
 ```{r}
 #Install data package if not done already 
 # install.packages("palmerpenguins")
@@ -143,9 +131,8 @@ summary(penguins) #generate an exploratory summary matrix
 
 ```
 
-Foundational Grammar: Slicing, Filtering, Sorting & Transforming
-dplyr package : easy data manipulation 
-input dataframe as primary argument > outputs modified tibble
+Foundational Grammar: Slicing, Filtering, Sorting & Transforming dplyr package : easy data manipulation input dataframe as primary argument \> outputs modified tibble
+
 ```{r}
 #Vertical slice specific morphometric variables by explicit name
 morphology_metric <- select(penguins, 
@@ -157,7 +144,8 @@ morphology_metric <- select(penguins,
 glimpse(morphology_metric)
 ```
 
-Isolating Attribute with function: select() *targets variables vertically
+Isolating Attribute with function: select() \*targets variables vertically
+
 ```{r}
 #Retain a continuous block of attributes using the colon operator
 spatial_block <- select(penguins, species:island)
@@ -170,7 +158,8 @@ clean_scientific_fields
 
 ```
 
-Sifting rows with function: filter() *targets variables horizontally
+Sifting rows with function: filter() \*targets variables horizontally
+
 ```{r}
 #Isolate observations belonging to a single categorical target group 
 adelie_cohort <- filter(penguins, species == "Adelie")
@@ -193,8 +182,8 @@ sub_islands
 
 ```
 
-Ordering Sequences with function: arrange() *alter sorting configuration ofg rows within dataframe without changing individual cell values
-#useful for assessing size hierarchies or chronological ordering long-term environmental observations
+Ordering Sequences with function: arrange() \*alter sorting configuration ofg rows within dataframe without changing individual cell values #useful for assessing size hierarchies or chronological ordering long-term environmental observations
+
 ```{r}
 #Sort penguins by ascending body mass (Smallest first * default)
 lightest_first <- arrange(penguins, body_mass_g)
@@ -210,16 +199,14 @@ stratified_morphology <- arrange(penguins, species, desc(bill_length_mm))
 stratified_morphology
 ```
 
-Introducing the Pipe |> (Base R) or %>% (Tidyverse, magrittr package)
+Introducing the Pipe \|\> (Base R) or %\>% (Tidyverse, magrittr package)
 
-#Logic of the Pipe |>
-- Without a pipe: read code "inside-out". 
-data in middle > mutate() > wrap using filter() > final wrap using select()
+#Logic of the Pipe \|\> - Without a pipe: read code "inside-out". data in middle \> mutate() \> wrap using filter() \> final wrap using select()
 
-- With a pipe: read code from left-right or top-bottom. 
-data > filter > mutate to create new column > select columns needed
+- With a pipe: read code from left-right or top-bottom. data \> filter \> mutate to create new column \> select columns needed
 
 Instead of:
+
 ```{r}
 
 penguins_subset <- mutate(penguins, bill_ratio = bill_length_mm / bill_depth_mm)
@@ -228,6 +215,7 @@ penguins_final <- filter(penguins_subset, species == "Adelie")
 ```
 
 Write:
+
 ```{r}
 
 penguins_final <- penguins |>
@@ -236,9 +224,8 @@ penguins_final <- penguins |>
 
 ```
 
-Computing New Attributes with function: mutate() * modify existing attribute or appemd entirely new vectors to dataframe
-Calculating new variables based on existing raw data
-E.g., standard geometric conversions or compute morphological ratios
+Computing New Attributes with function: mutate() \* modify existing attribute or appemd entirely new vectors to dataframe Calculating new variables based on existing raw data E.g., standard geometric conversions or compute morphological ratios
+
 ```{r}
 
 # Calculate a new morphological ratio in our environment
@@ -251,13 +238,11 @@ penguin_ratios <- penguins  |>
 glimpse(penguin_ratios)
 
 ```
-Data Aggregation and Ecological Summarisation 
-Isolating and sorting individual rows / columns = data cleaning
-Extracting meaningful biological data e.g., morphological allometry varies by species or island group = compress observations into population summary metrics
 
-#Dual-layered combination of functions: 
-group_by() - does not alter appearance of table 
-summarise() - calculate targeted statistical summary tibble
+Data Aggregation and Ecological Summarisation Isolating and sorting individual rows / columns = data cleaning Extracting meaningful biological data e.g., morphological allometry varies by species or island group = compress observations into population summary metrics
+
+#Dual-layered combination of functions: group_by() - does not alter appearance of table summarise() - calculate targeted statistical summary tibble
+
 ```{r}
 # Grouping our active memory penguins by species
 grouped_penguins <- group_by(penguins, species)
@@ -287,19 +272,16 @@ biological_signal #clean overview of sexual dimorphism and species variations ac
 
 ```
 
-
 Integrating Data Grammar with Visual Diagnostics in .qmd
 
 - Data Layer - source dataset table object e.g., ggplot(data = ..)
 - Aesthetic Mapping - define variables mapped to axes e.g., colours, shapes, size etc.
 - Geometric layer - define visual shape values represent e.g, points, bars, lines, boxplots
 
+Wrangling and Plotting in Parallel
 
-Wrangling and Plotting in Parallel 
+Challenge: Visualising Body Size and Shape - Summary Table - Visualisation
 
- Challenge: Visualising Body Size and Shape 
-  - Summary Table 
-  - Visualisation 
 ```{r}
 
 data <- penguins %>%
@@ -316,11 +298,10 @@ ggplot(data = penguins) +
 
 ```
 
-  
-Piping Directly to Visualisation * efficient workflow
+Piping Directly to Visualisation \* efficient workflow
 
-Visualising Mean Trends with Uncertainty
-Pipe |> or %>% grouped data directly into a plot and use geom_errorbar() to represent spread of data 
+Visualising Mean Trends with Uncertainty Pipe \|\> or %\>% grouped data directly into a plot and use geom_errorbar() to represent spread of data
+
 ```{r}
 #Pipe directly from aggregation to plotting with error bars
 
@@ -346,10 +327,11 @@ ggplot(aes(x = species, y = mean_mass, colour = island))+
 mass_compare_plot
 
 ```
-  Challenge:
-In your .qmd template, try creating a new plot. Experiment with swapping sd_mass (standard deviation) for standard error—you will need to divide your sd by the square root of n (sd / sqrt(n)). See how that changes your visual interpretation of the data uncertainty. Present the summary table alongside the associated figure and write down your thoughts on the underlying ecological story that the data are telling.
+
+Challenge: In your .qmd template, try creating a new plot. Experiment with swapping sd_mass (standard deviation) for standard error—you will need to divide your sd by the square root of n (sd / sqrt(n)). See how that changes your visual interpretation of the data uncertainty. Present the summary table alongside the associated figure and write down your thoughts on the underlying ecological story that the data are telling.
 
 Saving, Exporting and Version Milestones
+
 ```{r}
 #Create output directories if they do not exist
 #if (!dir.exists("outputs/figures")) dir.create("outputs/figures") # folder for figs
@@ -358,35 +340,24 @@ Saving, Exporting and Version Milestones
 
 ```
 
+TABLES - Universal CSV text file : collaborating outside of R - Native R Binary RDS object: preserves vector configuration for R
 
-TABLES
-- Universal CSV text file : collaborating outside of R
-- Native R Binary RDS object: preserves vector configuration for R
 ```{r}
 # 1. Exporting our collapsed summary table as a universal flat text file
-write_csv(biological_signal, "output/penguin_species_mass_summary.csv")
+write_csv(biological_signal, "Mod2_R4MarineScience/output/penguin_species_mass_summary.csv")
 
 # 2. Saving as a native R binary file
-saveRDS(biological_signal, "output/penguin_species_mass_summary.rds")
+saveRDS(biological_signal, "Mod2_R4MarineScience/output/penguin_species_mass_summary.rds")
 
 
 ```
 
-FIGURES
-- ggplot2 function: ggsave()
+FIGURES - ggplot2 function: ggsave()
 
 ```{r}
-ggsave("output/mass_compare_plot.png", 
+ggsave("Mod2_R4MarineScience/output/mass_compare_plot.png", 
        plot = mass_compare_plot, 
        width = 120, 
        height = 120, 
        units = "mm")
 ```
-
-
-
-
-
-
-
-

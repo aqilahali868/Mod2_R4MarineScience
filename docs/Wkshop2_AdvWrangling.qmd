@@ -1,0 +1,42 @@
+---
+title: "Wrkshop2_Advanced_Wrangling"
+format: html
+editor: visual
+---
+
+## Penguins
+
+Connect to github
+
+```{r}
+#usethis::use_git_config(user.name = "aqilahali868", user.email = "aqilah.ali0120@gmail.com")
+```
+
+#Load packages
+
+```{r}
+#library(tidyverse)
+
+```
+
+#Load penguins dataset
+
+```{r}
+#getwd()
+#penguins <- read_csv (.../data/Pengu)
+# OR  read_csv(here::here("data/penguins.csv"))
+
+#ggplot - geom_smooth method = "lm" linear model i.e. best fit line, "gam" generalized additive model i.e., flexible curve, se = TRUE, confidence interval, FALSE no confidence interval, formula = y ~ x, formula = y ~ poly(x, 2) quadratic model, formula = y ~ poly(x, 3) cubic model
+```
+
+```{r}
+
+# | fig-cap: "Title of the figure" 
+# | fig-width:: number
+# | fig-height:: number (both show exact size of figure in image)
+# OR in {r, fig.width=6, fig.height=4}
+
+#ggsave(plotname, filename = here::here("figures/plotname.png"), width = 6, height = 4, units = "in", dpi = 300) 
+#gives image of plot created
+
+```
