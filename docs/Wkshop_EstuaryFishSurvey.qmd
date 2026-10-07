@@ -32,6 +32,11 @@ sonde <- read_csv(here::here("data/workshop2/estuary_sonde_data.csv"))
 species <- read_csv(here::here("data/workshop2/species_dictionary.csv"))
 ```
 
+```{r}
+usethis::use_github()
+
+```
+
 
 
 
