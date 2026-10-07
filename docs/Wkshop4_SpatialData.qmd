@@ -1,0 +1,84 @@
+---
+title: "Wrkshop4_SpatialData"
+format: html
+editor: visual
+---
+
+sf objsect *standards data frame with special "geometry" column attached
+
+Installing Spatial R Packages
+```{r}
+  ##install packages  
+#install.packages("sf") 
+#install.packages("terra")
+#install.packages("tmap")
+
+#load packages
+library(tidyverse)
+library(sf) # simple features
+library (terra) # for raster
+library(tmap) # Thematic maps are geographical maps in which spatial data distributions are visualized
+
+```
+
+Problem: R analysis in copepod richness throughout Australia's oceans and Souther Ocean.
+Hypothesis: copepode species richness will be higher in warmer waters than cooler waters. 
+Develop a map that spatially displays data - is hypothesis supported/worth pursing
+
+```{r}
+#load data 
+#CPR - continuous plankton recorder
+copepod <- read_csv("data/data-for-course/copepods_raw.csv")
+copepod
+
+#Projection mathcing - checking coordinate refrence system (CRS) using: st_crs(sf_object) 
+```
+
+Data Exploration
+```{r}
+#initial plot....not a map
+ggplot(copepod) + 
+  aes(x = longitude, y = latitude, color = richness_raw) +
+  geom_point()
+
+
+#other trends/patterns 
+ggplot(copepod, aes(x = latitude, y = richness_raw) + 
+  stat_smooth() + 
+  geom_point()
+
+```
+
+sf() - GIS Equivalent:shape file or feature colletion 
+```{r}
+sdat <- st_as_sf(copepod, coords = c("longitude", "latitude"), 
+                 crs = 5126)
+# st_as_sf: converst data types to simple features
+
+# copepod: our original data
+
+# coords: names of columns realting to spatial coordinates (X,Y)
+
+#crs: coordinate reference system 
+
+```
+
+Coordinate Reference Systems 
+2D mapping of 3D sphere: 
+- datum: referencing point for Geographic coordinate reference systems (GCS)
+- unit usually decimal degrees (longitude and latitude)
+- common GCS: WGS84
+- EPSG code: 5126 (Projected CRS,short hand code for specific CRS) or Well-known text (WKT) to define CRS
+```{r}
+crs5126 <- st_crs(5126)
+crs5126 # look at the whole CRS
+crs5126$Name # pull out just the name of the crs
+# WGS84
+
+```
+
+
+
+
+
+

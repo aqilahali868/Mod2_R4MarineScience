@@ -4,30 +4,18 @@ format: html
 editor: visual
 ---
 
-## Penguins
-
 Connect to github
 
 ```{r}
-#usethis::use_git_config(user.name = "aqilahali868", user.email = "aqilah.ali0120@gmail.com")
+#usethis::use_git 
+
+#usethis::use_github()
 ```
 
-#Load packages
+ggplot - geom_smooth method = - "lm" linear model i.e. best fit line, - "gam" generalized additive model i.e., flexible curve, se =\
+- TRUE, confidence interval, - FALSE no confidence interval, formula = y \~ x, formula = y \~ poly(x, 2) quadratic model, formula = y \~ poly(x, 3) cubic model
 
-```{r}
-#library(tidyverse)
-
-```
-
-#Load penguins dataset
-
-```{r}
-#getwd()
-#penguins <- read_csv (.../data/Pengu)
-# OR  read_csv(here::here("data/penguins.csv"))
-
-#ggplot - geom_smooth method = "lm" linear model i.e. best fit line, "gam" generalized additive model i.e., flexible curve, se = TRUE, confidence interval, FALSE no confidence interval, formula = y ~ x, formula = y ~ poly(x, 2) quadratic model, formula = y ~ poly(x, 3) cubic model
-```
+Saving Images using ggsave
 
 ```{r}
 
@@ -39,4 +27,486 @@ Connect to github
 #ggsave(plotname, filename = here::here("figures/plotname.png"), width = 6, height = 4, units = "in", dpi = 300) 
 #gives image of plot created
 
+```
+
+Load packages - tidy formats: i.e more raw information, not rates or types: 2 of the same per variable e.g., type: #cases and population per country = 2 countries per type
+
+```{r}
+library(tidyverse)
+
+```
+
+Table Structure Examples
+
+```{r}
+
+table1 
+table2
+table3
+
+```
+
+Interrelated rules: - Each variable must have it's own column - Each observation must have its own row - Each value must have its own cell \*Consistent data structure easier for data transformations and statistical analysis
+
+e.g.,
+
+```{r}
+
+# Compute rate per 10,000
+table1 %>% 
+  mutate(rate = cases / population * 10000)
+
+
+# Compute cases per year
+table1 %>% 
+  count(year, wt = cases) 
+#> # A tibble: 2 × 2
+#>    year      n
+#>   <int>  <int>
+#> 1  1999 250740
+#> 2  2000 296920
+
+#(Frequency weight) wt = NULL if counts number of rows in each group OR 
+#wt = variable is computes sum(wt) for each group
+
+# Visualise changes over time
+ggplot(table1, aes(year, cases)) + 
+  geom_line(aes(group = country), colour = "grey50") + 
+  geom_point(aes(colour = country))
+
+```
+
+Pivoting Data/ Cleaning Step 1. - Understand dataset: what each variable and observation means/ represents Step 2. - Resolving common problems: A variable is spread across multiple columns\
+An observation is scattered across multiple rows i.e., pivot data / move it around
+
+Lengthening Datasets using function: tidyr:pivot_longer() which \>rows & \<columns
+
+```{r}
+
+billboard #messy data: each week of the year as a column - change to 1 column for every week and 1 column for every rank
+
+billboard |> pivot_longer(cols = starts_with("wk"),  #columns begin with "name", same as select()
+                         names_to = "week",          #names column storing all "name" columns
+                         values_to = "rank")         # values stored in cells of "name" column now named "ranks"
+
+```
+
+NAs for values wherever blanks present (may not be actual unknowns) can be removed using function: values_drop_na = TRUE)
+
+```{r}
+
+billboard |> pivot_longer(cols = starts_with("wk"), 
+                           names_to = "week",
+                           values_to = "rank",
+                           values_drop_na = TRUE)
+#All NAs removed & fewer rows
+```
+
+Additional Tidying \*converting strings to numbers using function: mutate() and parse_number()
+
+```{r}
+
+billboard_longer <- billboard |> 
+  pivot_longer(
+    cols = starts_with("wk"), 
+    names_to = "week", 
+    values_to = "rank",
+    values_drop_na = TRUE
+  ) |> 
+  mutate(
+    week = parse_number(week) #extracts first number from a string i.e. removed the 'wk' from wk1
+  )
+billboard_longer
+
+```
+
+Pivoting Longer e.g.,
+
+```{r}
+df <- tribble(
+  ~id,  ~bp1, ~bp2,
+   "A",  100,  120,
+   "B",  140,  115,
+   "C",  120,  125
+)
+
+#tidy dataset w/ 3 variable: id, measurement and value
+df_tidy <- df |> pivot_longer(cols = bp1:bp2, 
+                              names_to = "measurement", 
+                              values_to = "value")
+df_tidy #repeated id for each measurement 
+
+```
+
+Additional wrangling of pivot_long (many variable in column names)
+
+```{r}
+who2 |> 
+  pivot_longer(
+    cols = !(country:year),
+    names_to = c("diagnosis", "gender", "age"), #renames each column based on ""
+    names_sep = "_", #names contain multiple values, "_" controls how the column is broken down e.g. column name "sp_m_014" = VALUES sp m 014
+    values_to = "count" #values from original cells 
+  )
+
+```
+
+Widening Datasets using function: tidyr:pivot_wider() which \>columns & \<rows
+
+```{r}
+cms_patient_experience #messy dataset: start 5 columns
+
+cms_patient_experience|> distinct(measure_cd, measure_title) #all values for these variables
+
+cms_patient_experience|> pivot_wider(names_from = measure_cd, values_from = prf_rate) #now 9 columns
+
+cms_patient_experience|> pivot_wider(id_cols = starts_with("org"), #specify columns that unique identify each observation i.e. value
+                                     names_from = measure_cd,
+                                     values_from = prf_rate)
+
+```
+
+Additional wrangling of pivot_wider (many variable in column names)
+
+```{r}
+
+df <- tribble(
+  ~id, ~measurement, ~value,
+  "A",        "bp1",    100,
+  "B",        "bp1",    140,
+  "B",        "bp2",    115, 
+  "A",        "bp2",    120,
+  "A",        "bp3",    105
+)
+
+df |> 
+  pivot_wider(
+    names_from = measurement, #creates new column for each variable in measurement: bp1, bp2, bp3
+    values_from = value #matches values for each row
+  )
+
+df |> 
+  distinct(measurement) |> #output = unique values of measurement
+  pull()
+
+df |> 
+  select(-measurement, -value) |> #only id column 
+  distinct()
+
+df |> 
+  select(-measurement, -value) |> 
+  distinct() |> 
+  mutate(x = NA, y = NA, z = NA) #combine results to generate empty dataframe
+
+```
+
+Palmer Penguins #Load penguins dataset e.g., penguins \<- read_csv (".../data/Pengu") penguins \<- read_csv(here::here("data/penguins.csv")
+
+```{r}
+library(palmerpenguins)
+
+#Create a long version of the penguins dataset
+
+penguins_long <- penguins |> pivot_longer(cols = c(bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g),
+                                          names_to = "measurement_type",
+                                          values_to = "value")
+head(penguins_long)
+
+```
+
+```{r}
+
+penguins_long |> 
+  drop_na(value) |> 
+  ggplot(aes(x = value, fill = species))+
+  geom_histogram(bins = 30, alpha = 0.7, colour = "black")+
+  facet_wrap(~measurement_type, scales = "free_x")+
+  theme_minimal()+
+  labs(
+    title = "Morphometric distributions across penguin species",
+    x = "Measurement value",
+    y = "Frequency"
+  )
+
+```
+
+Widening Data with function: pivot_wider() \* easier to parse a wide table than a long repetitive list
+
+```{r}
+
+mass_summary <- penguins |> 
+  drop_na(body_mass_g) |>
+  group_by(species, island) |>
+  summarise(mean_mass = mean(body_mass_g))
+
+head(mass_summary) #could be tidyr
+
+mass_matrix <- mass_summary |>
+  pivot_wider(names_from = island, 
+               values_from = mean_mass)
+
+head(mass_matrix) #clear species body mass by island
+
+```
+
+Separating and Uniting Data Tables using function: separate()
+
+```{r}
+table3 %>% 
+  separate(rate, into = c("cases", "population"), sep = "/") 
+#case & pop as <chr>, sep = specific character separator
+
+table3 %>% 
+  separate(rate, into = c("cases", "population"), convert = TRUE) 
+#case & pop as <int>
+
+table3 %>% 
+  separate(year, into = c("century", "year"), sep = 2) 
+#interprets integer as position to split at i.e., sep 2 = split column 2, 
+#1 = far-left, -1 = far-right or the string
+```
+
+Using function unite() to merge multiple columns
+
+```{r}
+table5 %>% 
+  unite(new, century, year, sep = "") #need to add sep(do not want ant separator)
+
+```
+
+Wrangling Strings using tidyverse::stringr (text) - Formatting mismatches e.g., "Nelly Bay", "nelly_bay", "NELLY BAY" as same location
+
+```{r}
+
+library(tidyverse)
+
+# A remarkably messy data frame of field sites
+messy_sites <- tibble(
+  site_id = c(" Nelly Bay", "nelly_bay", "NELLY BAY", " Geoffrey_Bay ", "geoffrey bay")
+  )
+print(messy_sites)
+
+# Using stringr within mutate to standardize the text
+clean_sites <- messy_sites |> 
+  mutate(
+    #1. Convert everything to lowercase
+    site_clean = str_to_lower(site_id), 
+    #2. Replace any spaces with underscores
+    site_clean = str_replace_all(site_clean, pattern = " ", replacement = "_"),
+    #3. Trim any leading or trailing whitespaces (invisible spaces at the ends)
+    site_clean = str_trim(site_clean)
+  )
+
+print(clean_sites)
+
+```
+
+Wrangling Dates using tidyverse::lubridate (dates) - Formatting mismatches e.g., DD/MM/YYYY - use dmy() , YYYY-MM-DD - use ymd()
+
+```{r}
+#Parsing different data formats
+date_1 <- dmy("25/12/2026")
+date_2 <- ymd("2026-12-25")
+
+#R now recognises these as identical Date objects 
+date_1 == date_2 #TRUE
+
+```
+
+Acoustic Telemetry or CTD Profiles: timestamps, appending "\_hms" (hours, minutes, seconds)
+
+```{r}
+## A tibble of raw sensor data with a messy character timestamp
+sensor_data <- tibble(
+  raw_time = c("14-05-2026 08:30:00", "14-05-2026 08:45:00", "14-05-2026 09:00:00"),
+  temperature = c(24.5, 24.6, 24.4)
+)
+
+# Converting character strings to true POSIXct datetime objects
+sensor_clean <- sensor_data |>
+  mutate(
+    true_time = dmy_hms(raw_time)
+  )
+
+print(sensor_clean) #changed dmy-time to ymd-time
+
+#extract components e.g., month(true_time) to get month integer
+
+```
+
+Relational Data: Joining Tables using KEY column
+
+Tables Loaded
+
+```{r}
+
+# Table 1: Biological observation data
+observations <- tibble(
+  site_code = c("NB", "GB", "MI", "NB", "HB"),
+  species = c("Trout", "Snapper", "Trout", "Cod", "Trout"),
+  count = c(5, 2, 1, 3, 8)
+)
+
+# Table 2: Spatial metadata
+site_metadata <- tibble(
+  site_code = c("NB", "GB", "MI", "RP", "WP"),
+  zone = c("Marine National Park", "Conservation Park", "Habitat Protection", "General Use", "Other Use"),
+  lat = c(-19.16, -19.15, -19.14, -19.12, -19.11)
+)
+
+```
+
+Workhorse: left_join() & right_join() Function same way but in opposite directions, - L join keeps all row from left table(i.e. observations) and matches data from right table(i.e., site_metadata) wherever key matches , if missing = NA
+
+```{r}
+#Joining metadata to our observations
+joined_data <- observations |> 
+  left_join(site_metadata, by = join_by(site_code)) 
+#values only from sites in common and added HB from observations
+print(joined_data)
+
+```
+
+Strict Filter: inner_join() Only keeps rows that completely match in both tables Drops observations at site not listed in metadata (i.e. only for data w/ complete spatial or environmental context)
+
+```{r}
+matched_data <- observations|> 
+  inner_join(site_metadata, by = join_by(site_code)) #values only from sites in common 
+glimpse(matched_data)
+```
+
+Detective Filter: anti-join() Does not add new columns - Only shows rows with no match in right table(site_metadata)
+
+```{r}
+#Which observations are missinf from our metadata dictionary?
+missing_context <- observations |> 
+  anti_join(site_metadata, by = join_by(site_code))
+glimpe(missing_context) # "HB", "Trout", "8"
+```
+
+Handling Missing Values - NAs
+
+Converting legacy errors with: na_if() inside mutate() e.g., data from CTD casts or light loggers placeholders (-99 or -999)
+
+```{r}
+# Raw data from an old temperature logger
+logger_data <- tibble(
+  depth_m = c(10, 20, 30, 40),
+  temp_c = c(24.5, 24.1, -999, 23.5)) # -999 is a known sensor error code
+
+#Convert -999 error codes to true NA values
+fixed_logger <- logger_data |> 
+  mutate(temp_c = na_if(temp_c, -999))
+
+print(fixed_logger)
+```
+
+Replacing Missing Values with: coalesce() inside mutate() - When NA means 0
+
+```{r}
+# Simulate some count data
+shark_count <- tibble(
+  site = c("Reef_A", "Reef_B", "Reef_C"),
+  shark_count = c(3, NA, 5)) # The NA here actually means 0 sharks were seen
+
+#Replace NA with 0
+shark_fixed <- shark_count |>
+  mutate(shark_count = coalesce(shark_count, 0))
+
+print(shark_fixed)
+
+#for 2 columns e.g. primary_sensor and backup_sensor, coalesce(primary_sensor, backup_sensor) will use primary reading & fill in gaps with backup reading)
+```
+
+Na Not a Number (NaN) i.e. mathematically impossible e.g. calculating Catch per unit effort (catch and effort both = 0)
+
+```{r}
+
+cpue_data <- tibble(
+  site = c("Bay_1", "Bay_2"),
+  catch = c(10, 0),
+  effort_hours = c(2, 0))
+
+# Calculating CPUE (catch / effort)
+cpue_calc <- cpue_data |>
+  mutate(
+    cpue = catch / effort_hours)
+
+print(cpue_calc) #can remove using drop_na() or isolate using is.nan()
+
+```
+
+Implicit Missing Values & Zero-data Framework: complete() e.g., knowing where a species was NOT found e i.e. presence/absence
+
+```{r}
+
+raw_catch <- tibble(
+  site = c("Reef_1", "Reef_1", "Reef_2"),
+  species = c("Pmaculatus", "Pleopardus", "Pmaculatus"),
+  count = c(5, 2, 8))
+
+# Force inclusion of hidden zero-catch data
+full_catch_matrix <- raw_catch |>
+  complete(site, species, fill = list(count = 0)) #fills NAs with 0 for means/averaging
+
+print(full_catch_matrix)
+
+```
+
+Nuclear Option: drop_na() If NA = failed instrument reading
+
+```{r}
+sensor_log <- tibble(
+  day = 1:4,
+  salinity = c(35.2, 35.1, NA, 35.3)
+)
+
+# Remove any row where salinity is missing
+clean_log <- sensor_log |>
+  drop_na(salinity)
+
+print(clean_log)
+
+```
+
+Practical Exercise: Penguins, Pivots and Joining Data
+Exercise 1: Cleaning Messy Metadata
+```{r}
+
+# Make sure packages are loaded
+library(tidyverse)
+library(palmerpenguins)
+
+# The messy metadata provided by your colleague
+island_metadata <- tibble(
+  island_name = c(" biscoe", "Dream ", "Torgersen"),
+  station_install = c("15/01/2003", "22-03-2004", "05/11/2001"),
+  latitude = c(-64.81, -64.73, -64.76)
+)
+
+print(island_metadata)
+
+```
+Task: Create a new object called clean_metadata. Using mutate(), stringr, and lubridate, fix the island_name column so that it perfectly matches the island column in the penguins dataset (hint: watch out for those hidden spaces!). Then, convert the station_install column into a proper Date object.
+```{r}
+#fixing island names
+clean_metadata <- island_metadata |>
+  mutate(
+    island = str_to_title(island_name),
+    island = str_trim(island_name),
+    station_install = dmy(station_install)
+  )
+
+print(clean_metadata)
+
+#fixing date = year 
+clean_metadata |> 
+  separate(station_install, into = c("year", "day", "month"), convert = TRUE) 
+
+
+#joining 
+joined_metadata <- penguins_long|> 
+  left_join(clean_metadata, by = join_by(island)) 
+#values only from sites in common and added HB from observations
+print(joined_metadata)
 ```

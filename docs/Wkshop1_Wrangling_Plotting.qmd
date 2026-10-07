@@ -28,7 +28,7 @@ Workflow: On GitHub: Copy URL \> In R Studio: File \> New Project \> Version Con
 #gert::git_remote_remove("origin")
 
 #push fresh copy to personal github 
-#usethis::use_github()
+usethis::use_github()
 
 #update .gitignore file to ignore files and folders that should not be tracked by Git
 ```
