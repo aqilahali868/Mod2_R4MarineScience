@@ -1,42 +1,625 @@
 ---
 title: "Wkshop_EstuaryFishSurvey"
 format: html
+format:
+  html:
+    toc: true
+    code-fold: true
+execute:
+  echo: true
+  warning: false
+  message: false
 editor: visual
 ---
-Estuary Fish Survey - Data Rescue Mission
-The Premise: You have inherited a project from a former PhD student who was studying the 
-*relationship between water quality and predatory fish assemblages along the Ross River Estuary gradient. Unfortunately, their data management was entirely manual, and the files are a disaster.
-They left you with four separate datasets:
-estuary_catch_log.xlsx: Handwritten field counts of fish species (using common names), spread across multiple spreadsheet tabs.
-estuary_metadata.csv: The spatial coordinates and estuary zones for each site.
-estuary_sonde_data.csv: High-frequency water quality sensor readings.
-species_dictionary.csv: A taxonomic lookup table linking local common names to their accepted scientific names.
-Your mission is to write a single, reproducible R script (or .qmd) that ingests this mess, cleans it, joins it into a single master dataset, and produces a publication-ready visualisation of the estuary's ecology.
+
+Estuary Fish Survey - Data Rescue Mission The Premise: You have inherited a project from a former PhD student who was studying the \*relationship between water quality and predatory fish assemblages along the Ross River Estuary gradient. Unfortunately, their data management was entirely manual, and the files are a disaster. They left you with four separate datasets: - estuary_catch_log.xlsx: Handwritten field counts of fish species (using common names), spread across multiple spreadsheet tabs. - estuary_metadata.csv: The spatial coordinates and estuary zones for each site. - estuary_sonde_data.csv: High-frequency water quality sensor readings. - species_dictionary.csv: A taxonomic lookup table linking local common names to their accepted scientific names.
+
+Task: Write a single, reproducible R script (or .qmd) that ingests this mess, cleans it, joins it into a single master dataset, and produces a publication-ready visualisation of the estuary's ecology.
+
+# Introduction
+
+The aim of this analysis is to rescue and combine four messy datasets from a study of the relationship between water quality and predatory fish assemblages along the Ross River Estuary gradient.
+
+The workflow uses mainly **tidyverse** functions to:
+
+1. import and clean the fish catch data;
+2. standardise site and species names;
+3. join fish observations to the site metadata and taxonomic dictionary;
+4. clean and summarise the high-frequency sonde data;
+5. join water quality with fish observations; and
+6. produce a publication-ready visualisation.
+
+The original data are not modified.
+
+# 1. Load packages
 
 ```{r}
-#load packages
 library(tidyverse)
 library(readxl)
 library(here)
 
-#loading datasets
-# .xlsx file  estuary_catch_log = multiple sheets
-lower_ross <- read_excel(here::here("data/workshop2/estuary_catch_log.xlsx"), sheet = "Lower_ross")
-mid_ross <- read_excel(here::here("data/workshop2/estuary_catch_log.xlsx"), sheet = "Mid_Ross ")
-ross_mouth <- read_excel(here::here("data/workshop2/estuary_catch_log.xlsx"), sheet = "ROSS MOUTH")
-upper_ross <- read_excel(here::here("data/workshop2/estuary_catch_log.xlsx"), sheet = "Upper Ross")
 
-# .csv files  (here::here) to specifiy working directory 
-metadata <- read_csv(here::here("data/workshop2/estuary_metadata.csv"))
-sonde <- read_csv(here::here("data/workshop2/estuary_sonde_data.csv"))
-species <- read_csv(here::here("data/workshop2/species_dictionary.csv"))
+# Create folders for final outputs
+#dir.create("output", showWarnings = FALSE)
+#dir.create("figures", showWarnings = FALSE)
+```
+
+# 2. Import catch data
+
+The fish catch data are stored across four Excel worksheets. The worksheets are combined into one data frame using `map_dfr()`.
+
+```{r}
+catch_file <- here::here("data/workshop2/estuary_catch_log.xlsx")
+
+sheet_names <- excel_sheets(catch_file) #path must be a string
+
+fish <- map_dfr(
+  sheet_names,
+  ~ read_excel(catch_file, sheet = .x)
+)
+
+fish
+```
+
+## Clean the fish data
+
+The site and species names have inconsistent capitalisation, spaces and underscores. These are standardised before joining the datasets.
+
+```{r}
+fish <- fish |>
+  mutate(
+    site = str_to_lower(site),   #standardise to lowercase letters
+    site = str_replace_all(site, " ", "_"), #remove _
+    site = str_squish(site), #remove white spaces
+
+    species = str_to_lower(species),
+    species = str_squish(species),
+
+    date = as.Date(date),     #set class
+    count = as.numeric(count) 
+  ) |>
+  select(site, date, species, count) |>
+  arrange(site, date, species)
+
+fish
+```
+
+Check for missing (NAs) observations:
+```{r}
+fish |>
+  filter(is.na(site) | is.na(date) | is.na(species) | is.na(count))
+```
+
+Remove incomplete fish observations:
+```{r}
+fish <- fish |>
+  drop_na(site, date, species, count)
+fish
+```
+
+# 3. Import and clean the species dictionary
+
+The dictionary provides the accepted scientific name for each local common name.
+
+```{r}
+species_dictionary <- read_csv(here::here("data/workshop2/species_dictionary.csv"),
+                               show_col_types = FALSE)
+
+species_dictionary
+```
+
+Standardise the common names so they match the fish dataset.
+
+```{r}
+species_dictionary <- species_dictionary |>
+  mutate(
+    common_name = str_to_lower(common_name),
+    common_name = str_squish(common_name)
+  ) |>
+  select(common_name, scientific_name) |>
+  arrange(common_name)
+
+species_dictionary
+```
+
+## Join common names to scientific names
+
+A `left_join()` keeps every fish observation and adds the corresponding scientific name.
+
+```{r}
+fish <- fish |>
+  left_join(
+    species_dictionary,
+    by = c("species" = "common_name")
+  ) |>
+  arrange(date, site, scientific_name)
+
+fish
+```
+
+Check whether any common names failed to match:
+
+```{r}
+fish |>
+  filter(is.na(scientific_name)) |>
+  select(site, date, species, count)
+```
+
+# 4. Import and clean site metadata
+
+```{r}
+metadata <- read_csv(here::here("data/workshop2/estuary_metadata.csv"),
+                     show_col_types = FALSE)
+
+metadata
+```
+
+The site names use different combinations of spaces, underscores and capitalisation. First convert them to a consistent format.
+
+```{r}
+metadata <- metadata |>
+  mutate(
+    site_name = str_to_lower(site_name),
+    site_name = str_replace_all(site_name, " ", "_")
+  )
+```
+
+The site name can also be separated into two components and then recombined into a consistent `site_key`. This demonstrates `separate()` and `unite()` while making the standardisation explicit.
+
+```{r}
+metadata <- metadata |>
+  separate(
+    site_name,
+    into = c("site_part1", "site_part2"),
+    sep = "_",
+    extra = "merge",
+    fill = "right"
+  ) |>
+  mutate(
+    site_part1 = str_squish(site_part1),
+    site_part2 = str_squish(site_part2)
+  ) |>
+  unite(
+    site_key,
+    site_part1,
+    site_part2,
+    sep = "_",
+    remove = FALSE
+  ) |>
+  select(
+    site_key,
+    lat,
+    lon,
+    zone
+  ) |>
+  arrange(lat)
+
+metadata
+```
+
+# 5. Join fish observations to the site metadata
+
+The metadata currently uses `site_key`, so create the same key in the fish data:
+
+```{r}
+fish <- fish |>
+  mutate(
+    site_key = site
+  ) |>
+  select(
+    site_key,
+    date,
+    species,
+    scientific_name,
+    count
+  )
+```
+
+Join the spatial information:
+
+```{r}
+fish <- fish |>
+  left_join(
+    metadata,
+    by = "site_key"
+  ) |>
+  select(
+    site_key,
+    date,
+    species,
+    scientific_name,
+    count,
+    lat,
+    lon,
+    zone
+  ) |>
+  arrange(date, zone, scientific_name)
+
+fish
+```
+
+Check for unmatched sites:
+```{r}
+fish |>
+  filter(is.na(zone))
+```
+
+# 6. Import the sonde data
+
+The sonde contains high-frequency observations collected every 15 minutes.
+
+```{r}
+sonde <- read_csv(here::here("data/workshop2/estuary_sonde_data.csv"),
+                  show_col_types = FALSE)
+
+sonde
+```
+
+## Clean the sonde data
+
+The timestamp is converted from day/month/year format using `dmy_hm()`.
+
+```{r}
+sonde <- sonde |>
+  mutate(
+    site = str_to_lower(site),
+    site = str_replace_all(site, " ", "_"),
+
+    timestamp = dmy_hm(timestamp),
+
+    temperature = as.numeric(temperature),
+    salinity = as.numeric(salinity),
+    turbidity = as.numeric(turbidity)
+  ) |>
+  select(
+    site,
+    timestamp,
+    temperature,
+    salinity,
+    turbidity
+  ) |>
+  arrange(site, timestamp)
+
+sonde
+```
+
+Create a date column for joining with the daily fish survey data:
+
+```{r}
+sonde <- sonde |>
+  mutate(
+    date = as.Date(timestamp)
+  )
+```
+
+# 7. Reshape the sonde data with `pivot_longer()`
+
+Putting the three water-quality variables into one column makes it easier to apply the same quality-control rules to all variables.
+
+```{r}
+sonde_long <- sonde |>
+  pivot_longer(
+    cols = c(temperature, salinity, turbidity),
+    names_to = "variable",
+    values_to = "value"
+  ) |>
+  arrange(site, timestamp, variable)
+
+sonde_long
+```
+
+## Remove invalid sensor values
+
+The turbidity data contain negative values including the `-999` missing-value code. Negative salinity values are also invalid.
+
+```{r}
+sonde_long <- sonde_long |>
+  mutate(
+    value = case_when(
+      variable == "turbidity" & value < 0 ~ NA_real_,
+      variable == "salinity" & value < 0 ~ NA_real_,
+      variable == "temperature" & (value < 0 | value > 40) ~ NA_real_,
+      TRUE ~ value
+    )
+  )
+```
+
+Remove observations with missing values:
+
+```{r}
+sonde_long <- sonde_long |>
+  drop_na(value)
+```
+
+# 8. Calculate daily water-quality values
+
+The fish data are recorded by day, so the 15-minute sonde observations are summarised to daily means.
+
+```{r}
+sonde_daily_long <- sonde_long |>
+  group_by(site, date, variable) |>
+  summarise(
+    daily_mean = mean(value),
+    .groups = "drop"
+  ) |>
+  arrange(date, site, variable)
+
+sonde_daily_long
+```
+
+## Convert the water-quality variables back to columns
+
+`pivot_wider()` converts the long data back into one row per site and date.
+
+```{r}
+sonde_daily <- sonde_daily_long |>
+  pivot_wider(
+    names_from = variable,
+    values_from = daily_mean
+  ) |>
+  arrange(date, site)
+
+sonde_daily
+```
+
+Rename the site column so it can be joined with the fish dataset:
+
+```{r}
+sonde_daily <- sonde_daily |>
+  rename(
+    site_key = site
+  )
+```
+
+# 9. Join fish and water-quality data
+
+The fish observations and daily sonde data have two common variables: `site_key` and `date`.
+
+```{r}
+master <- fish |>
+  left_join(
+    sonde_daily,
+    by = c("site_key", "date")
+  ) |>
+  arrange(date, zone, site_key, scientific_name)
+
+master
+```
+
+The resulting `master` dataset contains:
+
+- fish abundance;
+- common and scientific species names;
+- site coordinates;
+- estuary zone;
+- daily temperature;
+- daily salinity; and
+- daily turbidity.
+
+# 10. Check the rescued master dataset
+
+Check the dimensions:
+
+```{r}
+dim(master)
+```
+
+Check the sites:
+
+```{r}
+master |>
+  select(site_key, zone, lat, lon) |>
+  distinct() |>
+  arrange(lat)
+```
+
+Check the species:
+
+```{r}
+master |>
+  select(species, scientific_name) |>
+  distinct() |>
+  arrange(scientific_name)
+```
+
+Check for missing joined values:
+
+```{r}
+master |>
+  filter(
+    is.na(scientific_name) |
+    is.na(zone) |
+    is.na(salinity) |
+    is.na(turbidity)
+  )
+```
+
+Export the rescued dataset:
+
+```{r}
+
+write_csv(
+  master,
+  here::here("output/estuary_master_dataset.csv")
+)
+
+```
+
+# 11. Prepare fish assemblage data
+
+Calculate the total abundance of each species within each estuary zone.
+
+```{r}
+fish_zone <- master |>
+  group_by(zone, scientific_name) |>
+  summarise(
+    abundance = sum(count),
+    .groups = "drop"
+  ) |>
+  arrange(zone, desc(abundance))
+
+fish_zone
+```
+
+Calculate relative abundance within each zone:
+
+```{r}
+fish_zone <- fish_zone |>
+  group_by(zone) |>
+  mutate(
+    relative_abundance = abundance / sum(abundance)
+  ) |>
+  ungroup()
+
+fish_zone
+```
+
+# 12. Publication-ready visualisation
+
+Summary Table 
+```{r}
+
+summary_table <- master %>%
+  group_by(scientific_name, zone) %>%
+  summarise(
+    mean_count = mean(count, na.rm = TRUE),
+    sd_count = sd(count, na.rm = TRUE),
+    mean_salinity = mean(salinity, na.rm = TRUE),
+    sd_salinity = sd(salinity, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+summary_table
+
+```
+
+
+```{r}
+write_csv(
+  summary_table,
+  here::here("output/summary_table.csv")
+)
+
+```
+
+
+The main figure shows how the fish assemblage changes along the Ross River estuary gradient.
+
+```{r}
+figure <- ggplot(fish_zone, 
+                 aes(x = zone, y = relative_abundance, fill = scientific_name)) +
+  geom_col(width = 0.7, colour = "white") +
+  scale_y_continuous(
+    labels = scales::percent,
+    expand = c(0, 0)) +
+  labs(
+    title = "Predatory fish assemblages across the Ross River Estuary",
+    subtitle = "Relative abundance of recorded fish taxa across the estuary gradient",
+    x = "Estuary zone",
+    y = "Relative abundance",
+    fill = "Fish taxon") +
+  theme_classic(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    plot.subtitle = element_text(size = 10),
+    legend.position = "bottom",
+    axis.text.x = element_text(angle = 20, hjust = 1)
+  )
+
+figure
+```
+ePortfolio figure 
+```{r}
+
+ggplot(master,
+  aes(x = salinity, y = count)) +
+  geom_point(alpha = 0.7) +
+  facet_wrap(~ scientific_name, scales = "free_y") +
+  labs(
+    title = "Fish Abundance Along the Salinity Gradient",
+    x = "Salinity",
+    y = "Fish abundance"
+  ) +
+  theme_classic() +
+  theme(
+    strip.text = element_text(face = "bold"),
+    plot.title = element_text(face = "bold"),
+    axis.title = element_text(face = "bold")
+  )
+
 ```
 
 ```{r}
-usethis::use_github()
+
+ggplot(master, aes(x = salinity, y = count, colour = scientific_name)) +
+  geom_point(size = 1.5, alpha = 0.7) +
+  geom_smooth(method = "lm", se = TRUE, linewidth = 0.8) +
+  facet_wrap(
+    ~ scientific_name,
+    scales = "free_y") +
+  scale_colour_brewer(
+    palette = "Dark2") +
+  labs(
+    title = "Fish Abundance Along the Salinity Gradient",
+    x = "Salinity",
+    y = "Fish abundance") +
+  theme_classic() +
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    axis.title = element_text(face = "bold", size = 12),
+    strip.text = element_text(face = "bold", size = 11),
+    legend.position = "none"
+  )
 
 ```
 
 
+
+Save the figure:
+
+```{r}
+ggsave(
+  here::here("output/ross_river_fish_assemblage.png"),
+  figure,
+  width = 10,
+  height = 6,
+  dpi = 300
+)
+```
+
+# 13. Optional environmental relationship
+
+A second visualisation can examine the relationship between fish abundance and salinity.
+
+```{r}
+ggplot(
+  master,
+  aes(x = salinity, y = count, colour = zone)) +
+  geom_point(alpha = 0.7) +
+  geom_smooth(method = "lm", se = TRUE) +
+  labs(
+    title = "Fish abundance in relation to salinity",
+    x = "Daily mean salinity",
+    y = "Fish abundance",
+    colour = "Estuary zone") +
+  theme_classic(base_size = 12)
+
+```
+
+# Conclusion
+
+The rescued dataset combines the original fish observations, taxonomic information, spatial metadata and daily water-quality measurements into a single reproducible dataset.
+
+The main data-management steps were:
+
+- standardising inconsistent site and species names with `mutate()`;
+- selecting and arranging relevant variables with `select()` and `arrange()`;
+- removing incomplete records with `drop_na()`;
+- separating and recombining site identifiers with `separate()` and `unite()`;
+- reshaping high-frequency water-quality measurements with `pivot_longer()` and `pivot_wider()`;
+- combining datasets with `left_join()`; and
+- summarising fish abundance and water quality with `group_by()` and `summarise()`.
+
+The final master dataset is saved as `output/estuary_master_dataset.csv`, and the publication-ready fish assemblage figure is saved in the `figures/` folder.
 
 
