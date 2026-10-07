@@ -3,24 +3,20 @@ title: "Wkshop_EstuaryFishSurvey"
 format: html
 editor: visual
 ---
-
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
-
-```{r}
-1 + 1
-```
-
-You can add options to executable code like this
+Estuary Fish Survey - Data Rescue Mission
+The Premise: You have inherited a project from a former PhD student who was studying the relationship between water quality and predatory fish assemblages along the Ross River Estuary gradient. Unfortunately, their data management was entirely manual, and the files are a disaster.
+They left you with four separate datasets:
+estuary_catch_log.xlsx: Handwritten field counts of fish species (using common names), spread across multiple spreadsheet tabs.
+estuary_metadata.csv: The spatial coordinates and estuary zones for each site.
+estuary_sonde_data.csv: High-frequency water quality sensor readings.
+species_dictionary.csv: A taxonomic lookup table linking local common names to their accepted scientific names.
+Your mission is to write a single, reproducible R script (or .qmd) that ingests this mess, cleans it, joins it into a single master dataset, and produces a publication-ready visualisation of the estuary's ecology.
 
 ```{r}
-#| echo: false
-2 * 2
+usethis::use_git()
+
+usethis::use_github()
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+
+
