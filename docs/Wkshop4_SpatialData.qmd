@@ -4,7 +4,7 @@ format: html
 editor: visual
 ---
 
-sf objsect *standards data frame with special "geometry" column attached
+sf object *standards data frame with special "geometry" column attached
 
 Installing Spatial R Packages
 ```{r}
@@ -22,16 +22,17 @@ library(tmap) # Thematic maps are geographical maps in which spatial data distri
 ```
 
 Problem: R analysis in copepod richness throughout Australia's oceans and Souther Ocean.
-Hypothesis: copepode species richness will be higher in warmer waters than cooler waters. 
+Hypothesis: copepod species richness will be higher in warmer waters than cooler waters. 
 Develop a map that spatially displays data - is hypothesis supported/worth pursing
 
 ```{r}
 #load data 
 #CPR - continuous plankton recorder
-copepod <- read_csv("data/data-for-course/copepods_raw.csv")
+copepod <- read_csv("~/Mod2_R4MarineScience/data/data-for-course/copepods_raw.csv")
 copepod
 
-#Projection mathcing - checking coordinate refrence system (CRS) using: st_crs(sf_object) 
+
+#Projection matching - checking coordinate reference system (CRS) using: st_crs(sf_object) 
 ```
 
 Data Exploration
@@ -53,11 +54,11 @@ sf() - GIS Equivalent:shape file or feature colletion
 ```{r}
 sdat <- st_as_sf(copepod, coords = c("longitude", "latitude"), 
                  crs = 5126)
-# st_as_sf: converst data types to simple features
+# st_as_sf: converts data types to simple features
 
 # copepod: our original data
 
-# coords: names of columns realting to spatial coordinates (X,Y)
+# coords: names of columns relating to spatial coordinates (X,Y)
 
 #crs: coordinate reference system 
 

@@ -32,6 +32,7 @@ Saving Images using ggsave
 Load packages - tidy formats: i.e more raw information, not rates or types: 2 of the same per variable e.g., type: #cases and population per country = 2 countries per type
 
 ```{r}
+
 library(tidyverse)
 
 ```
@@ -381,7 +382,7 @@ Detective Filter: anti-join() Does not add new columns - Only shows rows with no
 #Which observations are missinf from our metadata dictionary?
 missing_context <- observations |> 
   anti_join(site_metadata, by = join_by(site_code))
-glimpe(missing_context) # "HB", "Trout", "8"
+glimpse(missing_context) # "HB", "Trout", "8"
 ```
 
 Handling Missing Values - NAs
@@ -487,13 +488,14 @@ island_metadata <- tibble(
 print(island_metadata)
 
 ```
-Task: Create a new object called clean_metadata. Using mutate(), stringr, and lubridate, fix the island_name column so that it perfectly matches the island column in the penguins dataset (hint: watch out for those hidden spaces!). Then, convert the station_install column into a proper Date object.
+Task: Create a new object called clean_metadata. Using mutate(), stringr, and lubridate, fix the island_name column so that it perfectly matches the island column in the penguins dataset (hint: watch out for those hidden spaces!). 
+Then, convert the station_install column into a proper Date object.
 ```{r}
 #fixing island names
 clean_metadata <- island_metadata |>
   mutate(
-    island = str_to_title(island_name),
-    island = str_trim(island_name),
+    island_name = str_to_title(island_name),
+    island_name = str_trim(island_name),
     station_install = dmy(station_install)
   )
 
@@ -503,10 +505,47 @@ print(clean_metadata)
 clean_metadata |> 
   separate(station_install, into = c("year", "day", "month"), convert = TRUE) 
 
-
-#joining 
-joined_metadata <- penguins_long|> 
-  left_join(clean_metadata, by = join_by(island)) 
-#values only from sites in common and added HB from observations
-print(joined_metadata)
 ```
+
+Exercise 2: The Relational Join 
+Task: Create a new object called penguins_spatial. Use a left_join() to attach your clean_metadata to the main penguins dataset. Hint: Because the column containing the island names is called island in the penguins dataset, and island_name in your metadata, you will need to specify how they match using by = join_by(island == island_name).
+```{r}
+
+penguins_spatial <- penguins_long|> 
+  left_join(clean_metadata, by = join_by(island == island_name)) 
+#values only from sites in common and added HB from observations
+glimpse(penguins_spatial)
+
+```
+
+Exercise 3: The Wide Summary Matrix
+A collaborator has asked for a clean, publication-ready table showing the maximum body mass recorded for each species, separated by island.
+Task: Starting with your penguins_spatial dataset:
+Drop any missing values in the body_mass_g column.
+Group by species and island.
+Summarise the data to find the maximum body mass (max()).
+Pivot the dataset wider so that the species form the rows, and the islands form the columns.
+
+```{r}
+
+penguins_summary <- penguins_spatial |> 
+    filter(measurement_type == "body_mass_g") |>
+    drop_na(value) |>
+    group_by(species, island) |>
+  summarise(
+    max_body_mass_g = max(value), 
+    .groups = "drop". #
+  )
+glimpse(penguins_summary)
+
+penguins_matrix <- penguins_summary |>
+  pivot_wider(names_from = island, 
+               values_from = max_body_mass_g)
+
+head(penguins_matrix) 
+
+
+```
+
+
+
