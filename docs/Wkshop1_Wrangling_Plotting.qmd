@@ -28,7 +28,7 @@ Workflow: On GitHub: Copy URL \> In R Studio: File \> New Project \> Version Con
 #gert::git_remote_remove("origin")
 
 #push fresh copy to personal github 
-usethis::use_github()
+#usethis::use_github()
 
 #update .gitignore file to ignore files and folders that should not be tracked by Git
 ```
@@ -46,7 +46,7 @@ rm(list = ls())
 ## Confirm that global session memory is completely vacant 
 objects()
 
-unlink("~/.RData") #delete .RData file from disk to prevent automatic loading of objects into session memory on RStudio startup")
+#unlink("~/.RData") #delete .RData file from disk to prevent automatic loading of objects into session memory on RStudio startup")
 
 ```
 
@@ -329,6 +329,36 @@ mass_compare_plot
 ```
 
 Challenge: In your .qmd template, try creating a new plot. Experiment with swapping sd_mass (standard deviation) for standard error—you will need to divide your sd by the square root of n (sd / sqrt(n)). See how that changes your visual interpretation of the data uncertainty. Present the summary table alongside the associated figure and write down your thoughts on the underlying ecological story that the data are telling.
+
+```{r}
+#Swapping sd_mass for se_mass (sd(body_mass_g, na.rm = TRUE)/sqrt(n))
+
+mass_compare_plot <- penguins |> 
+  group_by(species, island) |>
+  summarise(
+    mean_mass = mean(body_mass_g, na.rm = TRUE), 
+    se_mass = sd(body_mass_g, na.rm = TRUE) / 
+      sqrt(sum(!is.na(body_mass_g))),
+    n = n(),
+    .groups = "drop"
+  ) |>
+ggplot(aes(x = species, y = mean_mass, colour = island))+
+  geom_point(size = 2)+
+  geom_errorbar(aes(ymin = mean_mass - se_mass, 
+                    ymax = mean_mass + se_mass), 
+                width = 0.2)+
+  labs(title = "Mean Body Mass by Species and Island",
+       subtitle = "Error bars represent standard error", 
+       x = "Species",
+       y = "Mean Body MAss (g)")+
+  theme_minimal()
+
+summary(mass_compare_plot)
+plot(mass_compare_plot) #lower distribution of se than sd
+
+
+```
+
 
 Saving, Exporting and Version Milestones
 
