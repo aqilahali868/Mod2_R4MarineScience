@@ -55,8 +55,7 @@ sheet_names <- excel_sheets(catch_file) #path must be a string
 
 fish <- map_dfr(
   sheet_names,
-  ~ read_excel(catch_file, sheet = .x)
-)
+  ~ read_excel(catch_file, sheet = .x))
 
 fish
 ```
@@ -118,8 +117,8 @@ species_dictionary_clean <- species_dictionary |>
   mutate(
     common_name = str_to_lower(common_name),
     common_name = str_replace_all(common_name, " ", "_"),
-    common_name = str_squish(common_name)
-  ) |>
+    common_name = str_squish(common_name)) |>
+ 
   select(common_name, scientific_name) |>
   arrange(common_name)
 
@@ -134,8 +133,7 @@ A `left_join()` keeps every fish observation and adds the corresponding scientif
 estuary_fish <- fish_clean |>
   left_join(
     species_dictionary_clean,
-    by = c("species" = "common_name")
-  ) |>
+    by = c("species" = "common_name")) |>
   arrange(date, site, scientific_name)
 
 estuary_fish
@@ -177,25 +175,21 @@ metadata_clean <- metadata |>
     into = c("site_part1", "site_part2"),
     sep = "_",
     extra = "merge",
-    fill = "right"
-  ) |>
+    fill = "right") |>
   mutate(
     site_part1 = str_squish(site_part1),
-    site_part2 = str_squish(site_part2)
-  ) |>
+    site_part2 = str_squish(site_part2)) |>
   unite(
-    site_key,
+    site,
     site_part1,
     site_part2,
     sep = "_",
-    remove = FALSE
-  ) |>
+    remove = FALSE) |>
   select(
-    site_key,
+    site,
     lat,
     lon,
-    zone
-  ) |>
+    zone) |>
   arrange(lat)
 
 metadata_clean
@@ -206,33 +200,31 @@ metadata_clean
 The metadata currently uses `site_key`, so create the same key in the fish data:
 
 ```{r}
-#updated 
+
 estuary_complete <- estuary_fish |>
   complete(
-    site_key,
+    site,
     date,
     scientific_name
   ) |>
   mutate(
     count = coalesce(count, 0))
 
+estuary_complete
 ```
 
 Join the spatial information:
 
 ```{r}
 
-#updated
-master <- estuary_complete |>
-  left_join(
-    metadata,
-    by = "site_key"
-  ) |>
-  left_join(
-    sonde_daily,
-    by = c("site_key", "date")
-  ) |>
-  arrange(date, zone, site_key, scientific_name)
+#master <- estuary_complete |>
+  #left_join(
+  #  metadata,
+  #  by = "site_key") |>
+  #left_join(
+  #  sonde_daily,
+  #  by = c("site_key", "date")) |>
+  #arrange(date, zone, site_key, scientific_name)
 
 
 ```
@@ -240,8 +232,8 @@ master <- estuary_complete |>
 Check for unmatched sites:
 
 ```{r}
-fish |>
-  filter(is.na(zone))
+#fish |>
+  #filter(is.na(zone))
 ```
 
 # 6. Import the sonde data
@@ -252,15 +244,11 @@ The sonde contains high-frequency observations collected every 15 minutes.
 sonde <- read_csv(here::here("data/workshop2/estuary_sonde_data.csv"),
                   show_col_types = FALSE)
 
-sonde
-```
-
 ## Clean the sonde data
 
-The timestamp is converted from day/month/year format using `dmy_hm()`.
+#The timestamp is converted from day/month/year format using `dmy_hm()`.
 
-```{r}
-sonde <- sonde |>
+sonde_clean <- sonde |>
   mutate(
     site = str_to_lower(site),
     site = str_replace_all(site, " ", "_"),
@@ -269,35 +257,29 @@ sonde <- sonde |>
 
     temperature = as.numeric(temperature),
     salinity = as.numeric(salinity),
-    turbidity = as.numeric(turbidity)
-  ) |>
-  select(
+    turbidity = as.numeric(turbidity),
+    
+    date = as.Date(timestamp)) |> #date column for joining with dialy fish survey data 
+ 
+   select(
     site,
+    date,
     timestamp,
     temperature,
     salinity,
-    turbidity
-  ) |>
+    turbidity) |>
   arrange(site, timestamp)
 
-sonde
+sonde_clean
 ```
 
-Create a date column for joining with the daily fish survey data:
-
-```{r}
-sonde <- sonde |>
-  mutate(
-    date = as.Date(timestamp)
-  )
-```
 
 # 7. Reshape the sonde data with `pivot_longer()`
 
 Putting the three water-quality variables into one column makes it easier to apply the same quality-control rules to all variables.
 
 ```{r}
-sonde_long <- sonde |>
+sonde_long <- sonde_clean |>
   pivot_longer(
     cols = c(temperature, salinity, turbidity),
     names_to = "variable",
@@ -313,23 +295,17 @@ sonde_long
 The turbidity data contain negative values including the `-999` missing-value code. Negative salinity values are also invalid.
 
 ```{r}
-sonde_long <- sonde_long |>
+sonde_long |>
   mutate(
     value = case_when(
       variable == "turbidity" & value < 0 ~ NA_real_,
       variable == "salinity" & value < 0 ~ NA_real_,
       variable == "temperature" & (value < 0 | value > 40) ~ NA_real_,
-      TRUE ~ value
-    )
-  )
+      TRUE ~ value)) |>
+  drop_na(value) #remove observations with missing values 
+
 ```
 
-Remove observations with missing values:
-
-```{r}
-sonde_long <- sonde_long |>
-  drop_na(value)
-```
 
 # 8. Calculate daily water-quality values
 
@@ -340,8 +316,7 @@ sonde_daily_long <- sonde_long |>
   group_by(site, date, variable) |>
   summarise(
     daily_mean = mean(value),
-    .groups = "drop"
-  ) |>
+    .groups = "drop") |>
   arrange(date, site, variable)
 
 sonde_daily_long
@@ -352,45 +327,33 @@ sonde_daily_long
 `pivot_wider()` converts the long data back into one row per site and date.
 
 ```{r}
-#sonde_daily <- sonde_daily_long |>
-#  pivot_wider(
-  #  names_from = variable,
-  #  values_from = daily_mean
- # ) |>
- # arrange(date, site)
+sonde_daily <- sonde_daily_long |>
+  pivot_wider(
+    names_from = variable,
+    values_from = daily_mean) |>
+  arrange(date, site)
 
-#sonde_daily
+sonde_daily
 
-sonde_day <- sonde |>
-  mutate(
-    date = floor_date(timestamp, unit = "day")
-  )
-
-sonde_day
 ```
 
 Rename the site column so it can be joined with the fish dataset:
-
-```{r}
-sonde_day <- sonde_day |>
-  rename(
-    site_key = site
-  )
-```
 
 # 9. Join fish and water-quality data
 
 The fish observations and daily sonde data have two common variables: `site_key` and `date`.
 
 ```{r}
-master <- fish |>
+master <- estuary_complete |>
   left_join(
-    sonde_day,
-    by = c("site_key", "date")) |>
-  arrange(date, zone, site_key, scientific_name)
+    metadata_clean, 
+    by = c("site")) |>
+  left_join(
+    sonde_daily,
+    by = c("site", "date")) |>
+  arrange(date, zone, site, scientific_name)
 
-
-
+glimpse(master)
 
 ```
 
@@ -416,7 +379,7 @@ Check the sites:
 
 ```{r}
 master |>
-  select(site_key, zone, lat, lon) |>
+  select(site, zone, lat, lon) |>
   distinct() |>
   arrange(lat)
 ```
@@ -438,8 +401,7 @@ master |>
     is.na(scientific_name) |
     is.na(zone) |
     is.na(salinity) |
-    is.na(turbidity)
-  )
+    is.na(turbidity))
 ```
 
 Export the rescued dataset:
@@ -448,8 +410,7 @@ Export the rescued dataset:
 
 write_csv(
   master,
-  here::here("output/estuary_master_dataset.csv")
-)
+  here::here("output/estuary_master_dataset.csv"))
 
 ```
 
@@ -462,8 +423,7 @@ fish_zone <- master |>
   group_by(zone, scientific_name) |>
   summarise(
     abundance = sum(count),
-    .groups = "drop"
-  ) |>
+    .groups = "drop") |>
   arrange(zone, desc(abundance))
 
 fish_zone
@@ -473,25 +433,13 @@ Calculate relative abundance within each zone:
 
 ```{r}
 
-fish_complete <- master |>
-  complete(
-    site,
-    date,
-    scientific_name
-  ) |>
+fish_zone <- fish_zone |>
+  group_by(zone) |>
   mutate(
-    count = coalesce(count, 0))
+    relative_abundance = abundance / sum(abundance)) |>
+  ungroup()
 
-fish_complete
-
-
-#fish_zone <- fish_zone |>
- # group_by(zone) |>
- # mutate(
-  #  relative_abundance = abundance / sum(abundance)) |>
-  #ungroup()
-
-#fish_zone
+fish_zone
 ```
 
 # 12. Publication-ready visualisation
@@ -509,81 +457,48 @@ summary_table <- master |>
     mean_salinity = mean(salinity, na.rm = TRUE),
     se_salinity = sd(salinity, na.rm = TRUE) /
       sqrt(sum(!is.na(salinity))),
-    .groups = "drop"
-  )
-
-summary_table
-
-```
-
-```{r}
+    .groups = "drop")
 
 write_csv(
   summary_table,
-  here::here("output/summary_table.csv")
-)
+  here::here("output/summary_table.csv"))
 
 ```
 
 The main figure shows how the fish assemblage changes along the Ross River estuary gradient.
+Predatory fish assemblages across the Ross River Estuary: Relative abundance of recorded fish taxa across the estuary gradient
 
 ```{r}
 figure <- ggplot(fish_zone, 
                  aes(x = zone, y = relative_abundance, fill = scientific_name)) +
-  geom_col(width = 0.7, colour = "white") +
+  geom_col(width = 0.5, colour = "white") +
   scale_y_continuous(
     labels = scales::percent,
     expand = c(0, 0)) +
   labs(
-    title = "Predatory fish assemblages across the Ross River Estuary",
-    subtitle = "Relative abundance of recorded fish taxa across the estuary gradient",
     x = "Estuary zone",
     y = "Relative abundance",
     fill = "Fish taxon") +
   theme_classic(base_size = 12) +
   theme(
-    plot.title = element_text(face = "bold"),
-    plot.subtitle = element_text(size = 10),
     legend.position = "bottom",
-    axis.text.x = element_text(angle = 20, hjust = 1)
-  )
+    axis.text.x = element_text(angle = 0, hjust = 0.5))
 
 figure
+
+#Save the figure:
+ggsave(here::here("output/ross_river_fish_assemblage.png"),
+  figure,
+  width = 10,
+  height = 6,
+  dpi = 300)
 ```
 
 ePortfolio figure : Fish Abundance vs Salinity Gradient
-
 ```{r}
 master <- master |>
   mutate(
-    zone = factor(
-      zone,
-      levels = c("Upstream", "Midstream", "Downstream")))
-
-ggplot(master,
-  aes(x = salinity, y = count)) +
-  geom_point(alpha = 0.7) +
-  facet_wrap(~ scientific_name, scales = "free_y") +
-  labs(
-    title = "Fish Abundance Along the Salinity Gradient",
-    x = "Salinity",
-    y = "Fish abundance"
-  ) +
-  theme_classic() +
-  theme(
-    strip.text = element_text(face = "bold"),
-    plot.title = element_text(face = "bold"),
-    axis.title = element_text(face = "bold")
-  )
-
-```
-
-```{r}
-master <- master |>
-  mutate(
-    zone = factor(
-      zone,
-      levels = c("Upstream", "Midstream", "Downstream")))
+    zone = factor(zone, levels = c("Upstream", "Midstream", "Downstream")))
 
 
 ggplot(master, aes(x = salinity, y = count, colour = scientific_name)) +
@@ -608,8 +523,8 @@ ggplot(master, aes(x = salinity, y = count, colour = scientific_name)) +
 
 ```
 
-Save the figure:
 
+Save the figure:
 ```{r}
 ggsave(
   here::here("output/ross_river_fish_assemblage.png"),
@@ -636,6 +551,38 @@ ggplot(
     y = "Fish abundance",
     colour = "Estuary zone") +
   theme_classic(base_size = 12)
+
+```
+
+
+```{r}
+
+ggplot(master, aes(x = salinity, y = count)) +
+  # Raw data points with transparency to handle overlapping
+  geom_point(size = 1.5, alpha = 0.5, colour = "black") +
+  # Linear trendline with standard error shading
+  geom_smooth(method = "lm", se = TRUE, colour = "blue", linewidth = 0.8) +
+  # Facet by species, allowing the y-axis to scale independently for each taxon
+  facet_wrap(~ scientific_name, scales = "free_y") +
+  labs(
+    x = "Daily Mean Salinity",
+    y = "Fish Abundance"
+  ) +
+  # theme_bw provides a clean, framed baseline for multi-panel publication plots
+  theme_bw(base_size = 12) +
+  theme(
+    # Taxonomic conventions require scientific names to be italicized
+    strip.text = element_text(face = "italic", size = 11, colour = "black"),
+    strip.background = element_rect(fill = "white", colour = "black", linewidth = 0.5),
+    axis.title = element_text(face = "bold", size = 12, colour = "black"),
+    axis.text = element_text(colour = "black"),
+    # Remove distracting minor gridlines while keeping major ones for readability
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_line(colour = "grey90"),
+    # Ensure borders around each facet are sharp
+    panel.border = element_rect(colour = "black", fill = NA, linewidth = 0.5),
+    legend.position = "none"
+  )
 
 ```
 

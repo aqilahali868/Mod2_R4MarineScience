@@ -320,6 +320,8 @@ ggplot(coral_data, aes(x = Year, y = Cover, color = Habitat, fill = Habitat)) +
   )
 
 ```
+
+
 ```{r}
 #| fig-width: 9
 #| fig-height: 6

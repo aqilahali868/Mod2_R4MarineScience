@@ -374,10 +374,10 @@ TABLES - Universal CSV text file : collaborating outside of R - Native R Binary 
 
 ```{r}
 # 1. Exporting our collapsed summary table as a universal flat text file
-write_csv(biological_signal,"Mod2_R4MarineScience/output/penguin_summary.csv")
+write_csv(biological_signal,"output/penguin_species_mass_summary.csv")
 
 # 2. Saving as a native R binary file
-saveRDS(biological_signal, "Mod2_R4MarineScience/output/penguin_summary.rds")
+saveRDS(penguin_species_mass_summary, "output/penguin_species_mass_summary.rds")
 
 ```
 
