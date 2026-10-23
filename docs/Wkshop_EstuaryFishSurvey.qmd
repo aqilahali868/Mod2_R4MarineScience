@@ -66,7 +66,7 @@ fish
 The site and species names have inconsistent capitalisation, spaces and underscores. These are standardised before joining the datasets.
 
 ```{r}
-fish <- fish |>
+fish_std <- fish |>
   mutate(
     site = str_to_lower(site),   #standardise to lowercase letters
     site = str_replace_all(site, " ", "_"), #replaces spaces with _
@@ -82,22 +82,22 @@ fish <- fish |>
   select(site, date, species, count) |>
   arrange(site, date, species)
 
-fish
+fish_std
 ```
 
 Check for missing (NAs) observations:
 
 ```{r}
-fish |>
+fish_std |>
   filter(is.na(site) | is.na(date) | is.na(species) | is.na(count))
 ```
 
 Remove incomplete fish observations:
 
 ```{r}
-fish <- fish |>
+fish_clean <- fish_std |>
   drop_na(site, date, species, count)
-fish
+fish_clean
 ```
 
 # 3. Import and clean the species dictionary
@@ -114,7 +114,7 @@ species_dictionary
 Standardise the common names so they match the fish dataset.
 
 ```{r}
-species_dictionary <- species_dictionary |>
+species_dictionary_clean <- species_dictionary |>
   mutate(
     common_name = str_to_lower(common_name),
     common_name = str_replace_all(common_name, " ", "_"),
@@ -123,7 +123,7 @@ species_dictionary <- species_dictionary |>
   select(common_name, scientific_name) |>
   arrange(common_name)
 
-species_dictionary
+species_dictionary_clean
 ```
 
 ## Join common names to scientific names
@@ -131,20 +131,20 @@ species_dictionary
 A `left_join()` keeps every fish observation and adds the corresponding scientific name.
 
 ```{r}
-fish <- fish |>
+estuary_fish <- fish_clean |>
   left_join(
-    species_dictionary,
+    species_dictionary_clean,
     by = c("species" = "common_name")
   ) |>
   arrange(date, site, scientific_name)
 
-fish
+estuary_fish
 ```
 
 Check whether any common names failed to match:
 
 ```{r}
-fish |>
+estuary_fish |>
   filter(is.na(scientific_name)) |>
   select(site, date, species, count)
 ```
@@ -164,14 +164,14 @@ The site names use different combinations of spaces, underscores and capitalisat
 metadata <- metadata |>
   mutate(
     site_name = str_to_lower(site_name),
-    site_name = str_replace_all(site_name, " ", "_")
-  )
+    site_name = str_replace_all(site_name, " ", "_"))
+
 ```
 
 The site name can also be separated into two components and then recombined into a consistent `site_key`. This demonstrates `separate()` and `unite()` while making the standardisation explicit.
 
 ```{r}
-metadata <- metadata |>
+metadata_clean <- metadata |>
   separate(
     site_name,
     into = c("site_part1", "site_part2"),
@@ -198,7 +198,7 @@ metadata <- metadata |>
   ) |>
   arrange(lat)
 
-metadata
+metadata_clean
 ```
 
 # 5. Join fish observations to the site metadata
@@ -207,15 +207,14 @@ The metadata currently uses `site_key`, so create the same key in the fish data:
 
 ```{r}
 #updated 
-fish_complete <- fish |>
+estuary_complete <- estuary_fish |>
   complete(
     site_key,
     date,
     scientific_name
   ) |>
   mutate(
-    count = coalesce(count, 0)
-  )
+    count = coalesce(count, 0))
 
 ```
 
@@ -224,7 +223,7 @@ Join the spatial information:
 ```{r}
 
 #updated
-master <- fish_complete |>
+master <- estuary_complete |>
   left_join(
     metadata,
     by = "site_key"
@@ -384,12 +383,11 @@ sonde_day <- sonde_day |>
 The fish observations and daily sonde data have two common variables: `site_key` and `date`.
 
 ```{r}
-#master <- fish |>
- # left_join(
- #   sonde_daily,
- #   by = c("site_key", "date")
- # ) |>
- # arrange(date, zone, site_key, scientific_name)
+master <- fish |>
+  left_join(
+    sonde_day,
+    by = c("site_key", "date")) |>
+  arrange(date, zone, site_key, scientific_name)
 
 
 
