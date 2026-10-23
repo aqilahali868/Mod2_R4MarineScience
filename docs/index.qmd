@@ -69,12 +69,14 @@ The site and species names have inconsistent capitalisation, spaces and undersco
 fish_std <- fish |>
   mutate(
     site = str_to_lower(site),   #standardise to lowercase letters
+    site = str_squish(site),     #remove white spaces
     site = str_replace_all(site, " ", "_"), #replaces spaces with _
-    site = str_squish(site), #remove white spaces
+
 
     species = str_to_lower(species),
-    species = str_replace_all(species, " ", "_"),
     species = str_squish(species),
+    species = str_replace_all(species, " ", "_"),
+    
 
     date = as.Date(date),     #set class
     count = as.numeric(count)) |>
@@ -117,8 +119,8 @@ Standardise the common names so they match the fish dataset.
 species_dictionary_clean <- species_dictionary |>
   mutate(
     common_name = str_to_lower(common_name),
-    common_name = str_replace_all(common_name, " ", "_"),
-    common_name = str_squish(common_name)) |>
+    common_name = str_squish(common_name),
+    common_name = str_replace_all(common_name, " ", "_")) |>
  
   select(common_name, scientific_name) |>
   arrange(common_name)
@@ -163,6 +165,7 @@ The site names use different combinations of spaces, underscores and capitalisat
 metadata <- metadata |>
   mutate(
     site_name = str_to_lower(site_name),
+    site_name = str_squish(site_name),
     site_name = str_replace_all(site_name, " ", "_"))
 
 ```
@@ -252,6 +255,7 @@ sonde <- read_csv(here::here("data/workshop2/estuary_sonde_data.csv"),
 sonde_clean <- sonde |>
   mutate(
     site = str_to_lower(site),
+    site = str_squish(site),
     site = str_replace_all(site, " ", "_"),
 
     timestamp = dmy_hm(timestamp),
@@ -497,7 +501,7 @@ ePortfolio figure : Fish Abundance vs Salinity Gradient
 ```{r}
 master <- master |>
   mutate(
-    zone = factor(zone, levels = c("Upstream", "Midstream", "Downstream")))
+    zone = factor(zone, levels = c("Upstream", "Middle", "Downstream", "Marine")))
 
 
 ggplot(master, aes(x = salinity, y = count, colour = scientific_name)) +
