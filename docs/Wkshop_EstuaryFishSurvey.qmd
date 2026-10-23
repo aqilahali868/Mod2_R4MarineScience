@@ -1,9 +1,10 @@
 ---
 title: "Wkshop_EstuaryFishSurvey"
-format: html
 format:
   html:
     toc: true
+    toc-location: left
+    toc-depth: 3
     code-fold: true
 execute:
   echo: true
@@ -273,7 +274,6 @@ sonde_clean <- sonde |>
 sonde_clean
 ```
 
-
 # 7. Reshape the sonde data with `pivot_longer()`
 
 Putting the three water-quality variables into one column makes it easier to apply the same quality-control rules to all variables.
@@ -305,7 +305,6 @@ sonde_long |>
   drop_na(value) #remove observations with missing values 
 
 ```
-
 
 # 8. Calculate daily water-quality values
 
@@ -465,8 +464,7 @@ write_csv(
 
 ```
 
-The main figure shows how the fish assemblage changes along the Ross River estuary gradient.
-Predatory fish assemblages across the Ross River Estuary: Relative abundance of recorded fish taxa across the estuary gradient
+The main figure shows how the fish assemblage changes along the Ross River estuary gradient. Predatory fish assemblages across the Ross River Estuary: Relative abundance of recorded fish taxa across the estuary gradient
 
 ```{r}
 figure <- ggplot(fish_zone, 
@@ -495,6 +493,7 @@ ggsave(here::here("output/ross_river_fish_assemblage.png"),
 ```
 
 ePortfolio figure : Fish Abundance vs Salinity Gradient
+
 ```{r}
 master <- master |>
   mutate(
@@ -523,8 +522,8 @@ ggplot(master, aes(x = salinity, y = count, colour = scientific_name)) +
 
 ```
 
-
 Save the figure:
+
 ```{r}
 ggsave(
   here::here("output/ross_river_fish_assemblage.png"),
@@ -553,7 +552,6 @@ ggplot(
   theme_classic(base_size = 12)
 
 ```
-
 
 ```{r}
 
