@@ -1,7 +1,8 @@
 ---
-title: "Wrkshop2_Advanced_Wrangling"
+title: "Workshop2_Advanced_Wrangling"
 format:
   html:
+    theme: cosmo
     toc: true
     toc-location: left
     toc-depth: 3

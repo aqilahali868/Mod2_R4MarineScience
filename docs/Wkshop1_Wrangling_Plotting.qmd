@@ -1,7 +1,8 @@
 ---
-title: "Wkshop1_Wrangling_Plotting"
+title: "Workshop1_Wrangling_Plotting"
 format:
   html:
+    theme: cosmo
     toc: true
     toc-location: left
     toc-depth: 3

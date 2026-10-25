@@ -1,7 +1,8 @@
 ---
-title: "Wkshop_EstuaryFishSurvey"
+title: "Workshop_EstuaryFishSurvey"
 format:
   html:
+    theme: cosmo
     toc: true
     toc-location: left
     toc-depth: 3
