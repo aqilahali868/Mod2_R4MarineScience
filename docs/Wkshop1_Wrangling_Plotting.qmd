@@ -382,17 +382,18 @@ TABLES - Universal CSV text file : collaborating outside of R - Native R Binary 
 
 ```{r}
 # 1. Exporting our collapsed summary table as a universal flat text file
-write_csv(biological_signal,"output/penguin_species_mass_summary.csv")
+write_csv(biological_signal,here::here(
+          "output/penguin_species_mass_summary.csv"))
 
 # 2. Saving as a native R binary file
-saveRDS(penguin_species_mass_summary, "output/penguin_species_mass_summary.rds")
+saveRDS(penguin_species_mass_summary,here::here("output/penguin_species_mass_summary.rds"))
 
 ```
 
 FIGURES - ggplot2 function: ggsave()
 
 ```{r}
-ggsave("Mod2_R4MarineScience/output/mass_compare_plot.png", 
+ggsave(here::here("output/mass_compare_plot.png"), 
        plot = mass_compare_plot, 
        width = 120, 
        height = 120, 
