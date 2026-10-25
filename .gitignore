@@ -5,19 +5,19 @@
 .Ruserdata
 .httr-oauth
 .DS_Store
-.quarto
+
 
 # Extensions to ignore
-.html
-.png
-.jpg
-.jpeg
-.eps
-.pdf
-.bmp
-.svg
-.tiff
-*.Rproj
+*  .html
+#.png
+#.jpg
+#.jpeg
+#.eps
+#.pdf
+#.bmp
+#.svg
+#.tiff
+*. .Rproj
 
 
 # Folders to ignore
@@ -27,7 +27,8 @@ test/
 
 # Keywords to ignore
 *archive
-.httr-oauth
-.quarto
-quarto-html
-bootstrap
+*.quarto
+*quarto-html
+*_files
+*bootstrap
+*tutor*

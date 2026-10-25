@@ -1,6 +1,15 @@
 ---
 title: "Wkshop1_Wrangling_Plotting"
-format: html
+format:
+  html:
+    toc: true
+    toc-location: left
+    toc-depth: 3
+    code-fold: true
+execute:
+  echo: true
+  warning: false
+  message: false
 editor: visual
 ---
 
@@ -358,7 +367,6 @@ plot(mass_compare_plot) #lower distribution of se than sd
 
 
 ```
-
 
 Saving, Exporting and Version Milestones
 
