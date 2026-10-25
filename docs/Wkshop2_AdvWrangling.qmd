@@ -1,6 +1,15 @@
 ---
 title: "Wrkshop2_Advanced_Wrangling"
-format: html
+format:
+  html:
+    toc: true
+    toc-location: left
+    toc-depth: 3
+    code-fold: true
+execute:
+  echo: true
+  warning: false
+  message: false
 editor: visual
 ---
 
@@ -12,8 +21,9 @@ Connect to github
 #usethis::use_github()
 ```
 
-ggplot - geom_smooth method = - "lm" linear model i.e. best fit line, - "gam" generalized additive model i.e., flexible curve, se =\
-- TRUE, confidence interval, - FALSE no confidence interval, formula = y \~ x, formula = y \~ poly(x, 2) quadratic model, formula = y \~ poly(x, 3) cubic model
+Notes: 
+ggplot - geom_smooth method = "lm" linear model i.e. best fit line, "gam" generalized additive model i.e., flexible curve, 
+se = TRUE, confidence interval, = FALSE no confidence interval, formula = y \~ x, formula = y \~ poly(x, 2) quadratic model, formula = y \~ poly(x,3) cubic model
 
 Saving Images using ggsave
 
@@ -77,10 +87,14 @@ ggplot(table1, aes(year, cases)) +
 
 ```
 
-Pivoting Data/ Cleaning Step 1. - Understand dataset: what each variable and observation means/ represents Step 2. - Resolving common problems: A variable is spread across multiple columns\
+# Pivoting Data/ Cleaning 
+
+1. Understand dataset: what each variable and observation means/ represents 
+2. Resolving common problems: A variable is spread across multiple columns\
 An observation is scattered across multiple rows i.e., pivot data / move it around
 
-Lengthening Datasets using function: tidyr:pivot_longer() which \>rows & \<columns
+## Lengthening Datasets 
+Function: tidyr:pivot_longer() which \>rows & \<columns
 
 ```{r}
 
@@ -92,6 +106,7 @@ billboard |> pivot_longer(cols = starts_with("wk"),  #columns begin with "name",
 
 ```
 
+## Removing NAs
 NAs for values wherever blanks present (may not be actual unknowns) can be removed using function: values_drop_na = TRUE)
 
 ```{r}
@@ -103,7 +118,8 @@ billboard |> pivot_longer(cols = starts_with("wk"),
 #All NAs removed & fewer rows
 ```
 
-Additional Tidying \*converting strings to numbers using function: mutate() and parse_number()
+Additional Tidying
+Converting strings to numbers using function: mutate() and parse_number()
 
 ```{r}
 
@@ -121,7 +137,8 @@ billboard_longer
 
 ```
 
-Pivoting Longer e.g.,
+# Lengthening Datasets 
+Function: tidyr:pivoting_longer() which < columns & > rows
 
 ```{r}
 df <- tribble(
@@ -152,7 +169,8 @@ who2 |>
 
 ```
 
-Widening Datasets using function: tidyr:pivot_wider() which \>columns & \<rows
+# Widening Datasets 
+Function: tidyr:pivot_wider() which >columns & <rows
 
 ```{r}
 cms_patient_experience #messy dataset: start 5 columns
@@ -201,7 +219,8 @@ df |>
 
 ```
 
-Palmer Penguins #Load penguins dataset e.g., penguins \<- read_csv (".../data/Pengu") penguins \<- read_csv(here::here("data/penguins.csv")
+# Palmer Penguins 
+Load penguins dataset e.g., penguins \<- read_csv (".../data/Pengu") penguins \<- read_csv(here::here("data/penguins.csv")
 
 ```{r}
 library(palmerpenguins)
@@ -216,6 +235,7 @@ head(penguins_long)
 ```
 
 ```{r}
+#PLotting  Morphometric distributions across penguin species
 
 penguins_long |> 
   drop_na(value) |> 
@@ -224,7 +244,6 @@ penguins_long |>
   facet_wrap(~measurement_type, scales = "free_x")+
   theme_minimal()+
   labs(
-    title = "Morphometric distributions across penguin species",
     x = "Measurement value",
     y = "Frequency"
   )
@@ -250,7 +269,8 @@ head(mass_matrix) #clear species body mass by island
 
 ```
 
-Separating and Uniting Data Tables using function: separate()
+# Separating and Uniting Data Tables 
+Function: separate()
 
 ```{r}
 table3 %>% 
@@ -266,7 +286,7 @@ table3 %>%
 #interprets integer as position to split at i.e., sep 2 = split column 2, 
 #1 = far-left, -1 = far-right or the string
 ```
-
+# Merging columns
 Using function unite() to merge multiple columns
 
 ```{r}
@@ -275,7 +295,8 @@ table5 %>%
 
 ```
 
-Wrangling Strings using tidyverse::stringr (text) - Formatting mismatches e.g., "Nelly Bay", "nelly_bay", "NELLY BAY" as same location
+# Wrangling String Variations
+Function: tidyverse::stringr (text) - Formatting mismatches e.g., "Nelly Bay", "nelly_bay", "NELLY BAY" as same location
 
 ```{r}
 
@@ -302,7 +323,8 @@ print(clean_sites)
 
 ```
 
-Wrangling Dates using tidyverse::lubridate (dates) - Formatting mismatches e.g., DD/MM/YYYY - use dmy() , YYYY-MM-DD - use ymd()
+# Wrangling Dates 
+Function: tidyverse::lubridate (dates) - Formatting mismatches e.g., DD/MM/YYYY - use dmy() , YYYY-MM-DD - use ymd()
 
 ```{r}
 #Parsing different data formats
@@ -335,7 +357,9 @@ print(sensor_clean) #changed dmy-time to ymd-time
 
 ```
 
-Relational Data: Joining Tables using KEY column
+# Relational Data: 
+
+## Joining Tables using KEY column
 
 Tables Loaded
 
@@ -357,7 +381,8 @@ site_metadata <- tibble(
 
 ```
 
-Workhorse: left_join() & right_join() Function same way but in opposite directions, - L join keeps all row from left table(i.e. observations) and matches data from right table(i.e., site_metadata) wherever key matches , if missing = NA
+Workhorse: left_join() & right_join() 
+Function same way but in opposite directions, - L join keeps all row from left table(i.e. observations) and matches data from right table(i.e., site_metadata) wherever key matches , if missing = NA
 
 ```{r}
 #Joining metadata to our observations
@@ -385,7 +410,7 @@ missing_context <- observations |>
 glimpse(missing_context) # "HB", "Trout", "8"
 ```
 
-Handling Missing Values - NAs
+# Handling Missing Values - NAs
 
 Converting legacy errors with: na_if() inside mutate() e.g., data from CTD casts or light loggers placeholders (-99 or -999)
 
@@ -402,7 +427,8 @@ fixed_logger <- logger_data |>
 print(fixed_logger)
 ```
 
-Replacing Missing Values with: coalesce() inside mutate() - When NA means 0
+# Replacing Missing Values
+Function: coalesce() inside mutate() - When NA means 0
 
 ```{r}
 # Simulate some count data
@@ -419,7 +445,8 @@ print(shark_fixed)
 #for 2 columns e.g. primary_sensor and backup_sensor, coalesce(primary_sensor, backup_sensor) will use primary reading & fill in gaps with backup reading)
 ```
 
-Na Not a Number (NaN) i.e. mathematically impossible e.g. calculating Catch per unit effort (catch and effort both = 0)
+# Na Not a Number(NaN) 
+i.e. mathematically impossible e.g. calculating Catch per unit effort (catch and effort both = 0)
 
 ```{r}
 
@@ -436,8 +463,8 @@ cpue_calc <- cpue_data |>
 print(cpue_calc) #can remove using drop_na() or isolate using is.nan()
 
 ```
-
-Implicit Missing Values & Zero-data Framework: complete() e.g., knowing where a species was NOT found e i.e. presence/absence
+# Implicit Missing Values & Zero-data Framework 
+Function: complete() e.g., knowing where a species was NOT found e i.e. presence/absence
 
 ```{r}
 
@@ -454,7 +481,8 @@ print(full_catch_matrix)
 
 ```
 
-Nuclear Option: drop_na() If NA = failed instrument reading
+# Nuclear Option 
+Drop_na() If NA = failed instrument reading
 
 ```{r}
 sensor_log <- tibble(
@@ -470,7 +498,11 @@ print(clean_log)
 
 ```
 
-Practical Exercise: Penguins, Pivots and Joining Data Exercise 1: Cleaning Messy Metadata
+# Practical Exercise 
+Penguins, Pivots and Joining Data 
+
+## Exercise 1
+Cleaning Messy Metadata
 
 ```{r}
 
@@ -489,7 +521,7 @@ print(island_metadata)
 
 ```
 
-Task: Create a new object called clean_metadata. Using mutate(), stringr, and lubridate, fix the island_name column so that it perfectly matches the island column in the penguins dataset (hint: watch out for those hidden spaces!). Then, convert the station_install column into a proper Date object.
+Create a new object called clean_metadata. Using mutate(), stringr, and lubridate, fix the island_name column so that it perfectly matches the island column in the penguins dataset (hint: watch out for those hidden spaces!). Then, convert the station_install column into a proper Date object.
 
 ```{r}
 #fixing island names
@@ -508,7 +540,8 @@ clean_metadata |>
 
 ```
 
-Exercise 2: The Relational Join Task: Create a new object called penguins_spatial. Use a left_join() to attach your clean_metadata to the main penguins dataset. Hint: Because the column containing the island names is called island in the penguins dataset, and island_name in your metadata, you will need to specify how they match using by = join_by(island == island_name).
+## Exercise 2 
+The Relational Join Task: Create a new object called penguins_spatial. Use a left_join() to attach your clean_metadata to the main penguins dataset. Hint: Because the column containing the island names is called island in the penguins dataset, and island_name in your metadata, you will need to specify how they match using by = join_by(island == island_name).
 
 ```{r}
 
@@ -519,7 +552,8 @@ glimpse(penguins_spatial)
 
 ```
 
-Exercise 3: The Wide Summary Matrix A collaborator has asked for a clean, publication-ready table showing the maximum body mass recorded for each species, separated by island. Task: Starting with your penguins_spatial dataset: Drop any missing values in the body_mass_g column. Group by species and island. Summarise the data to find the maximum body mass (max()). Pivot the dataset wider so that the species form the rows, and the islands form the columns.
+## Exercise 3 
+The Wide Summary Matrix A collaborator has asked for a clean, publication-ready table showing the maximum body mass recorded for each species, separated by island. Task: Starting with your penguins_spatial dataset: Drop any missing values in the body_mass_g column. Group by species and island. Summarise the data to find the maximum body mass (max()). Pivot the dataset wider so that the species form the rows, and the islands form the columns.
 
 ```{r}
 
@@ -529,8 +563,7 @@ penguins_summary <- penguins_spatial |>
     group_by(species, island) |>
   summarise(
     max_body_mass_g = max(value), 
-    .groups = "drop". #
-  )
+    .groups = "drop")
 glimpse(penguins_summary)
 
 penguins_matrix <- penguins_summary |>
