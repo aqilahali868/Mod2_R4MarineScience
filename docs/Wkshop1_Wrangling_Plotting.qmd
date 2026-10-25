@@ -15,9 +15,9 @@ editor: visual
 
 Foundations of Data Science Wrangling - systematic pipeline of reading, inspecting, parsing, and shaping data
 
-Project Initialisation and Workspace architecture
+# Project Initialisation and Workspace architecture
 
-Forking and Cloning a GitHub Repository
+## Forking and Cloning a GitHub Repository
 
 Forking (Connected Copy creates a copy of the repository in your GitHub account. This allows you to freely experiment with changes without affecting the original project.
 
@@ -29,7 +29,8 @@ Cloning (Standalone) creates a local copy of the repository on your computer. Th
 
 ```
 
-Workflow: On GitHub: Copy URL \> In R Studio: File \> New Project \> Version Control \> Git \> Paste URL \> Name Project \> Create Project Once Project cloned, copy files to YOUR Own Project folder and commit changes to GitHub
+## Workflow
+On GitHub: Copy URL \> In R Studio: File \> New Project \> Version Control \> Git \> Paste URL \> Name Project \> Create Project Once Project cloned, copy files to YOUR Own Project folder and commit changes to GitHub
 
 ```{r}
 
@@ -59,7 +60,8 @@ objects()
 
 ```
 
-Ingesting Data into R CSV (Comma-Separated Values) TSV (Tab-separated Values) = with spaces \t
+# Loading Data into R 
+CSV (Comma-Separated Values) TSV (Tab-separated Values) = with spaces \t
 Excel (Spreadsheets, Metadata formatting)
 
 ```{r}
@@ -81,7 +83,8 @@ fisheries_annual <- read_excel(here::here("data/workshop1/fish_catch_data.xlsx")
 
 ```
 
-Data cleaning: Loading excel data sheets with comments/field notes at top: end up as column headers
+## Data cleaning
+Loading excel data sheets with comments/field notes at top: end up as column headers
 
 ```{r}
 
@@ -102,11 +105,12 @@ mangrove_data #fixed data: now shows appropriate column headers and missing valu
              
 ```
 
-Data Frame Architecture: Tibbles(tidyverse not base R) vs Legacy(Base R) Tables Functional Behaviour: #Console Output Legacy Base R data.frame - print EVERY column & row Modern Tidyverse tibble - print only first 10 rows and columns that fit on screen
+## Data Frame Architecture
+Tibbles(tidyverse not base R) vs Legacy(Base R) Tables Functional Behaviour: #Console Output Legacy Base R data.frame - print EVERY column & row Modern Tidyverse tibble - print only first 10 rows and columns that fit on screen
 
-#Vector Verification Base R - print only text names(columns), requires different function to view variables e.g., str() or class() Tidy tibble - print column names and variable vector type e.g., <chr>, <dbl>, <fct>
+Vector Verification Base R - print only text names(columns), requires different function to view variables e.g., str() or class() Tidy tibble - print column names and variable vector type e.g., <chr>, <dbl>, <fct>
 
-#Partial Matching Trap Base R - does not require EXACT column name, allows salinity_ppt = df\$sal, i.e., errors Tidy tibble - requires exact column name to be used
+Partial Matching Trap Base R - does not require EXACT column name, allows salinity_ppt = df\$sal, i.e., errors Tidy tibble - requires exact column name to be used
 
 ```{r}
 #Force a modern tibble to degrade into a legacy base R dataframe structure 
@@ -123,7 +127,8 @@ print(benthic_cover) #print shows vector types
                            
 ```
 
-Wrangling Out Ecological Signals Using Palmer Penguins (Multi-species, morphological data, Antarctica)
+# Wrangling Out Ecological Signals 
+Using Palmer Penguins (Multi-species, morphological data, Antarctica)
 
 ```{r}
 #Install data package if not done already 
@@ -140,7 +145,8 @@ summary(penguins) #generate an exploratory summary matrix
 
 ```
 
-Foundational Grammar: Slicing, Filtering, Sorting & Transforming dplyr package : easy data manipulation input dataframe as primary argument \> outputs modified tibble
+## Foundational Grammar
+Slicing, Filtering, Sorting & Transforming dplyr package : easy data manipulation input dataframe as primary argument \> outputs modified tibble
 
 ```{r}
 #Vertical slice specific morphometric variables by explicit name
@@ -153,7 +159,8 @@ morphology_metric <- select(penguins,
 glimpse(morphology_metric)
 ```
 
-Isolating Attribute with function: select() \*targets variables vertically
+##Isolating Attribute 
+Function: select() -  targets variables vertically
 
 ```{r}
 #Retain a continuous block of attributes using the colon operator
@@ -167,7 +174,8 @@ clean_scientific_fields
 
 ```
 
-Sifting rows with function: filter() \*targets variables horizontally
+## Sifting rows 
+Function: filter() - targets variables horizontally
 
 ```{r}
 #Isolate observations belonging to a single categorical target group 
@@ -191,7 +199,8 @@ sub_islands
 
 ```
 
-Ordering Sequences with function: arrange() \*alter sorting configuration ofg rows within dataframe without changing individual cell values #useful for assessing size hierarchies or chronological ordering long-term environmental observations
+## Ordering Sequences 
+Function: arrange() \*alter sorting configuration ofg rows within dataframe without changing individual cell values #useful for assessing size hierarchies or chronological ordering long-term environmental observations
 
 ```{r}
 #Sort penguins by ascending body mass (Smallest first * default)
@@ -208,9 +217,10 @@ stratified_morphology <- arrange(penguins, species, desc(bill_length_mm))
 stratified_morphology
 ```
 
-Introducing the Pipe \|\> (Base R) or %\>% (Tidyverse, magrittr package)
+# Introducing the Pipe
+\|\> (Base R) or %\>% (Tidyverse, magrittr package)
 
-#Logic of the Pipe \|\> - Without a pipe: read code "inside-out". data in middle \> mutate() \> wrap using filter() \> final wrap using select()
+Logic of the Pipe \|\> - Without a pipe: read code "inside-out". data in middle \> mutate() \> wrap using filter() \> final wrap using select()
 
 - With a pipe: read code from left-right or top-bottom. data \> filter \> mutate to create new column \> select columns needed
 
@@ -233,7 +243,8 @@ penguins_final <- penguins |>
 
 ```
 
-Computing New Attributes with function: mutate() \* modify existing attribute or appemd entirely new vectors to dataframe Calculating new variables based on existing raw data E.g., standard geometric conversions or compute morphological ratios
+# Computing New Attributes 
+Function: mutate() \* modify existing attribute or amend entirely new vectors to dataframe Calculating new variables based on existing raw data E.g., standard geometric conversions or compute morphological ratios
 
 ```{r}
 
@@ -248,9 +259,10 @@ glimpse(penguin_ratios)
 
 ```
 
-Data Aggregation and Ecological Summarisation Isolating and sorting individual rows / columns = data cleaning Extracting meaningful biological data e.g., morphological allometry varies by species or island group = compress observations into population summary metrics
+# Data Aggregation and Ecological Summarisation 
 
-#Dual-layered combination of functions: group_by() - does not alter appearance of table summarise() - calculate targeted statistical summary tibble
+Isolating and sorting individual rows / columns = data cleaning Extracting meaningful biological data e.g., morphological allometry varies by species or island group = compress observations into population summary metrics. 
+Dual-layered combination of functions: group_by() - does not alter appearance of table summarise() - calculate targeted statistical summary tibble
 
 ```{r}
 # Grouping our active memory penguins by species
@@ -287,9 +299,10 @@ Integrating Data Grammar with Visual Diagnostics in .qmd
 - Aesthetic Mapping - define variables mapped to axes e.g., colours, shapes, size etc.
 - Geometric layer - define visual shape values represent e.g, points, bars, lines, boxplots
 
-Wrangling and Plotting in Parallel
+# Wrangling and Plotting in Parallel
 
-Challenge: Visualising Body Size and Shape - Summary Table - Visualisation
+# Challenge 1
+Visualising Body Size and Shape - Summary Table - Visualisation
 
 ```{r}
 
@@ -309,10 +322,11 @@ ggplot(data = penguins) +
 
 Piping Directly to Visualisation \* efficient workflow
 
-Visualising Mean Trends with Uncertainty Pipe \|\> or %\>% grouped data directly into a plot and use geom_errorbar() to represent spread of data
+Visualising Mean Trends with Uncertainty Pipe |> or %>% grouped data directly into a plot and use geom_errorbar() to represent spread of data
 
 ```{r}
 #Pipe directly from aggregation to plotting with error bars
+#Plot - Mean Body Mass by Species and Island, (Error bars represent standard deviation)
 
 mass_compare_plot <- penguins |> 
   group_by(species, island) |>
@@ -327,20 +341,21 @@ ggplot(aes(x = species, y = mean_mass, colour = island))+
   geom_errorbar(aes(ymin = mean_mass - sd_mass, 
                     ymax = mean_mass + sd_mass), 
                 width = 0.2)+
-  labs(title = "Mean Body Mass by Species and Island",
-       subtitle = "Error bars represent standard deviation", 
+  labs( 
        x = "Species",
-       y = "Mean Body MAss (g)")+
+       y = "Mean Body Mass(g)")+
   theme_minimal()
 
 mass_compare_plot
 
 ```
 
-Challenge: In your .qmd template, try creating a new plot. Experiment with swapping sd_mass (standard deviation) for standard error—you will need to divide your sd by the square root of n (sd / sqrt(n)). See how that changes your visual interpretation of the data uncertainty. Present the summary table alongside the associated figure and write down your thoughts on the underlying ecological story that the data are telling.
+# Challenge 2
+In your .qmd template, try creating a new plot. Experiment with swapping sd_mass (standard deviation) for standard error—you will need to divide your sd by the square root of n (sd / sqrt(n)). See how that changes your visual interpretation of the data uncertainty. Present the summary table alongside the associated figure and write down your thoughts on the underlying ecological story that the data are telling.
 
 ```{r}
 #Swapping sd_mass for se_mass (sd(body_mass_g, na.rm = TRUE)/sqrt(n))
+#Plot - Mean Body Mass by Species and Island, (Error bars represent standard error)
 
 mass_compare_plot <- penguins |> 
   group_by(species, island) |>
@@ -356,10 +371,9 @@ ggplot(aes(x = species, y = mean_mass, colour = island))+
   geom_errorbar(aes(ymin = mean_mass - se_mass, 
                     ymax = mean_mass + se_mass), 
                 width = 0.2)+
-  labs(title = "Mean Body Mass by Species and Island",
-       subtitle = "Error bars represent standard error", 
+  labs( 
        x = "Species",
-       y = "Mean Body MAss (g)")+
+       y = "Mean Body Mass(g)")+
   theme_minimal()
 
 summary(mass_compare_plot)
@@ -368,7 +382,7 @@ plot(mass_compare_plot) #lower distribution of se than sd
 
 ```
 
-Saving, Exporting and Version Milestones
+# Saving, Exporting and Version Milestones
 
 ```{r}
 #Create output directories if they do not exist
@@ -378,19 +392,20 @@ Saving, Exporting and Version Milestones
 
 ```
 
-TABLES - Universal CSV text file : collaborating outside of R - Native R Binary RDS object: preserves vector configuration for R
+## TABLES 
+Universal CSV text file : collaborating outside of R - Native R Binary RDS object: preserves vector configuration for R
 
 ```{r}
 # 1. Exporting our collapsed summary table as a universal flat text file
-write_csv(biological_signal,here::here(
-          "output/penguin_species_mass_summary.csv"))
+write_csv(biological_signal,here::here("output/penguin_species_mass_summary.csv"))
 
 # 2. Saving as a native R binary file
-saveRDS(penguin_species_mass_summary,here::here("output/penguin_species_mass_summary.rds"))
+saveRDS(biological_signal,here::here("output/penguin_species_mass_summary.rds"))
 
 ```
 
-FIGURES - ggplot2 function: ggsave()
+## FIGURES 
+ggplot2 function: ggsave()
 
 ```{r}
 ggsave(here::here("output/mass_compare_plot.png"), 

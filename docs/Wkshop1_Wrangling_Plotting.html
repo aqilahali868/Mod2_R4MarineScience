@@ -79,10 +79,46 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="fullcontent quarto-light">
+<body class="quarto-light">
 
-<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#project-initialisation-and-workspace-architecture" id="toc-project-initialisation-and-workspace-architecture" class="nav-link active" data-scroll-target="#project-initialisation-and-workspace-architecture">Project Initialisation and Workspace architecture</a>
+  <ul class="collapse">
+  <li><a href="#forking-and-cloning-a-github-repository" id="toc-forking-and-cloning-a-github-repository" class="nav-link" data-scroll-target="#forking-and-cloning-a-github-repository">Forking and Cloning a GitHub Repository</a></li>
+  <li><a href="#workflow" id="toc-workflow" class="nav-link" data-scroll-target="#workflow">Workflow</a></li>
+  </ul></li>
+  <li><a href="#loading-data-into-r" id="toc-loading-data-into-r" class="nav-link" data-scroll-target="#loading-data-into-r">Loading Data into R</a>
+  <ul class="collapse">
+  <li><a href="#data-cleaning" id="toc-data-cleaning" class="nav-link" data-scroll-target="#data-cleaning">Data cleaning</a></li>
+  <li><a href="#data-frame-architecture" id="toc-data-frame-architecture" class="nav-link" data-scroll-target="#data-frame-architecture">Data Frame Architecture</a></li>
+  </ul></li>
+  <li><a href="#wrangling-out-ecological-signals" id="toc-wrangling-out-ecological-signals" class="nav-link" data-scroll-target="#wrangling-out-ecological-signals">Wrangling Out Ecological Signals</a>
+  <ul class="collapse">
+  <li><a href="#foundational-grammar" id="toc-foundational-grammar" class="nav-link" data-scroll-target="#foundational-grammar">Foundational Grammar</a></li>
+  <li><a href="#sifting-rows" id="toc-sifting-rows" class="nav-link" data-scroll-target="#sifting-rows">Sifting rows</a></li>
+  <li><a href="#ordering-sequences" id="toc-ordering-sequences" class="nav-link" data-scroll-target="#ordering-sequences">Ordering Sequences</a></li>
+  </ul></li>
+  <li><a href="#introducing-the-pipe" id="toc-introducing-the-pipe" class="nav-link" data-scroll-target="#introducing-the-pipe">Introducing the Pipe</a></li>
+  <li><a href="#computing-new-attributes" id="toc-computing-new-attributes" class="nav-link" data-scroll-target="#computing-new-attributes">Computing New Attributes</a></li>
+  <li><a href="#data-aggregation-and-ecological-summarisation" id="toc-data-aggregation-and-ecological-summarisation" class="nav-link" data-scroll-target="#data-aggregation-and-ecological-summarisation">Data Aggregation and Ecological Summarisation</a></li>
+  <li><a href="#wrangling-and-plotting-in-parallel" id="toc-wrangling-and-plotting-in-parallel" class="nav-link" data-scroll-target="#wrangling-and-plotting-in-parallel">Wrangling and Plotting in Parallel</a></li>
+  <li><a href="#challenge-1" id="toc-challenge-1" class="nav-link" data-scroll-target="#challenge-1">Challenge 1</a></li>
+  <li><a href="#challenge-2" id="toc-challenge-2" class="nav-link" data-scroll-target="#challenge-2">Challenge 2</a></li>
+  <li><a href="#saving-exporting-and-version-milestones" id="toc-saving-exporting-and-version-milestones" class="nav-link" data-scroll-target="#saving-exporting-and-version-milestones">Saving, Exporting and Version Milestones</a>
+  <ul class="collapse">
+  <li><a href="#tables" id="toc-tables" class="nav-link" data-scroll-target="#tables">TABLES</a></li>
+  <li><a href="#figures" id="toc-figures" class="nav-link" data-scroll-target="#figures">FIGURES</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+</div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -105,15 +141,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>Foundations of Data Science Wrangling - systematic pipeline of reading, inspecting, parsing, and shaping data</p>
-<p>Project Initialisation and Workspace architecture</p>
-<p>Forking and Cloning a GitHub Repository</p>
+<section id="project-initialisation-and-workspace-architecture" class="level1">
+<h1>Project Initialisation and Workspace architecture</h1>
+<section id="forking-and-cloning-a-github-repository" class="level2">
+<h2 class="anchored" data-anchor-id="forking-and-cloning-a-github-repository">Forking and Cloning a GitHub Repository</h2>
 <p>Forking (Connected Copy creates a copy of the repository in your GitHub account. This allows you to freely experiment with changes without affecting the original project.</p>
 <p>Cloning (Standalone) creates a local copy of the repository on your computer. This allows you to work on the project offline and make changes locally before pushing them back to the remote repository.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#usethis::use_git()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
-<p>Workflow: On GitHub: Copy URL &gt; In R Studio: File &gt; New Project &gt; Version Control &gt; Git &gt; Paste URL &gt; Name Project &gt; Create Project Once Project cloned, copy files to YOUR Own Project folder and commit changes to GitHub</p>
+</section>
+<section id="workflow" class="level2">
+<h2 class="anchored" data-anchor-id="workflow">Workflow</h2>
+<p>On GitHub: Copy URL &gt; In R Studio: File &gt; New Project &gt; Version Control &gt; Git &gt; Paste URL &gt; Name Project &gt; Create Project Once Project cloned, copy files to YOUR Own Project folder and commit changes to GitHub</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#remove original connection to source GitHub repository</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#gert::git_remote_remove("origin")</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -121,116 +167,85 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#usethis::use_github()</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#update .gitignore file to ignore files and folders that should not be tracked by Git</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
 <p>Memory Allocation &amp; Environmental Hygiene Disk(Permanent Storage) vs Session Environment (RAM/Computer Memory) # purge .RData</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#House keeping</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Inventory every active object currently residing in session RAM</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">objects</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>character(0)</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Purge global environment</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>())</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Confirm that global session memory is completely vacant </span></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">objects</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>character(0)</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unlink</span>(<span class="st">"~/.RData"</span>) <span class="co">#delete .RData file from disk to prevent automatic loading of objects into session memory on RStudio startup")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#unlink("~/.RData") #delete .RData file from disk to prevent automatic loading of objects into session memory on RStudio startup")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
-<p>Ingesting Data into R CSV (Comma-Separated Values) TSV (Tab-separated Values) = with spaces xcel (Spreadsheets, Metadata formatting)</p>
+</section>
+</section>
+<section id="loading-data-into-r" class="level1">
+<h1>Loading Data into R</h1>
+<p>CSV (Comma-Separated Values) TSV (Tab-separated Values) = with spaces xcel (Spreadsheets, Metadata formatting)</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Load primary data science framework and Excel import library</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.4     ✔ readr     2.1.6
-✔ forcats   1.0.1     ✔ stringr   1.6.0
-✔ ggplot2   4.0.2     ✔ tibble    3.3.1
-✔ lubridate 1.9.4     ✔ tidyr     1.3.2
-✔ purrr     1.2.1     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>here() starts at /Users/ali/Desktop/MB5370 - Techniqies in Marine Science 1/Mod2_R4MarineScience</code></pre>
-</div>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Loading .CSV plain text file</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>benthic_cover <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/workshop1/reef_cover_log.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 6 Columns: 7
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr  (1): site_id
-dbl  (5): transect_no, depth_m, hard_coral_pct, macroalgae_pct, bare_substra...
-date (1): date
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Loading .CSV plain text file</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>benthic_cover <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/workshop1/reef_cover_log.csv"</span>))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Loading .TXT/.TSV tab-separated text files</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>acoustic_stream <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/workshop1/acoustic_telemetry_stream.txt"</span>))</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Loading .XLSX spread sheet files</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>fisheries_annual <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/workshop1/fish_catch_data.xlsx"</span>), <span class="at">sheet =</span> <span class="st">"Commercial_2026"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Loading .TXT/.TSV tab-separated text files</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>acoustic_stream <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/workshop1/acoustic_telemetry_stream.txt"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 6 Columns: 5
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: "\t"
-chr  (3): receiver_id, tag_id, species
-dbl  (1): sensor_depth_m
-dttm (1): timestamp
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Loading .XLSX spread sheet files</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>fisheries_annual <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/workshop1/fish_catch_data.xlsx"</span>), <span class="at">sheet =</span> <span class="st">"Commercial_2026"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Data cleaning: Loading excel data sheets with comments/field notes at top: end up as column headers</p>
+<section id="data-cleaning" class="level2">
+<h2 class="anchored" data-anchor-id="data-cleaning">Data cleaning</h2>
+<p>Loading excel data sheets with comments/field notes at top: end up as column headers</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Read in mangrove_data</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>mangrove_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/workshop1/mangrove_survey_raw.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: One or more parsing issues, call `problems()` on your data frame for details,
-e.g.:
-  dat &lt;- vroom(...)
-  problems(dat)</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 11 Columns: 1
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (1): Field team: Smith and Jones
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Warning pops up</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Read in mangrove_data</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>mangrove_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/workshop1/mangrove_survey_raw.csv"</span>))</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Warning pops up</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use args within read_csv to skip headers and declare missing flags</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>mangrove_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/workshop1/mangrove_survey_raw.csv"</span>), </span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">skip =</span> <span class="dv">5</span>, <span class="co">#skip first 5 lines of field notes</span></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">na =</span> <span class="fu">c</span>(<span class="st">"."</span>, <span class="st">"NA"</span>, <span class="st">"9999"</span>, <span class="st">"ND"</span>, <span class="st">"blank"</span>)) <span class="co">#convert known text alts to true NA</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 6 Columns: 6
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (2): site_id, notes
-dbl (4): plot_no, canopy_height_m, crab_burrows_count, salinity_ppt
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>mangrove_data <span class="co">#fixed data: now shows appropriate column headers and missing values</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use args within read_csv to skip headers and declare missing flags</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>mangrove_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/workshop1/mangrove_survey_raw.csv"</span>), </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">skip =</span> <span class="dv">5</span>, <span class="co">#skip first 5 lines of field notes</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">na =</span> <span class="fu">c</span>(<span class="st">"."</span>, <span class="st">"NA"</span>, <span class="st">"9999"</span>, <span class="st">"ND"</span>, <span class="st">"blank"</span>)) <span class="co">#convert known text alts to true NA</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>mangrove_data <span class="co">#fixed data: now shows appropriate column headers and missing values</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 6
   site_id plot_no canopy_height_m crab_burrows_count salinity_ppt notes         
@@ -243,17 +258,23 @@ dbl (4): plot_no, canopy_height_m, crab_burrows_count, salinity_ppt
 6 HIN_B         3             4.9                 NA         35.2 Data sheet sm…</code></pre>
 </div>
 </div>
-<p>Data Frame Architecture: Tibbles(tidyverse not base R) vs Legacy(Base R) Tables Functional Behaviour: #Console Output Legacy Base R data.frame - print EVERY column &amp; row Modern Tidyverse tibble - print only first 10 rows and columns that fit on screen</p>
-<p>#Vector Verification Base R - print only text names(columns), requires different function to view variables e.g., str() or class() Tidy tibble - print column names and variable vector type e.g., <chr>, <dbl>, <fct></fct></dbl></chr></p>
-<p>#Partial Matching Trap Base R - does not require EXACT column name, allows salinity_ppt = df$sal, i.e., errors Tidy tibble - requires exact column name to be used</p>
+</section>
+<section id="data-frame-architecture" class="level2">
+<h2 class="anchored" data-anchor-id="data-frame-architecture">Data Frame Architecture</h2>
+<p>Tibbles(tidyverse not base R) vs Legacy(Base R) Tables Functional Behaviour: #Console Output Legacy Base R data.frame - print EVERY column &amp; row Modern Tidyverse tibble - print only first 10 rows and columns that fit on screen</p>
+<p>Vector Verification Base R - print only text names(columns), requires different function to view variables e.g., str() or class() Tidy tibble - print column names and variable vector type e.g., <chr>, <dbl>, <fct></fct></dbl></chr></p>
+<p>Partial Matching Trap Base R - does not require EXACT column name, allows salinity_ppt = df$sal, i.e., errors Tidy tibble - requires exact column name to be used</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Force a modern tibble to degrade into a legacy base R dataframe structure </span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>benthic_cover_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(benthic_cover)</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Print old-style dataframe structure</span></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(benthic_cover_df) <span class="co">#print shows all columns and rows, no vector type info, allows partial matching</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Force a modern tibble to degrade into a legacy base R dataframe structure </span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>benthic_cover_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(benthic_cover)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Print old-style dataframe structure</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(benthic_cover_df) <span class="co">#print shows all columns and rows, no vector type info, allows partial matching</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>       site_id transect_no       date depth_m hard_coral_pct macroalgae_pct
 1    Nelly_Bay           1 2026-05-10     4.5           45.2           12.1
@@ -270,8 +291,11 @@ dbl (4): plot_no, canopy_height_m, crab_burrows_count, salinity_ppt
 5               33.6
 6               34.9</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Tibble alternative</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(benthic_cover) <span class="co">#print shows vector types</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Tibble alternative</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(benthic_cover) <span class="co">#print shows vector types</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 7
   site_id      transect_no date       depth_m hard_coral_pct macroalgae_pct
@@ -285,26 +309,24 @@ dbl (4): plot_no, canopy_height_m, crab_burrows_count, salinity_ppt
 # ℹ 1 more variable: bare_substrate_pct &lt;dbl&gt;</code></pre>
 </div>
 </div>
-<p>Wrangling Out Ecological Signals Using Palmer Penguins (Multi-species, morphological data, Antarctica)</p>
+</section>
+</section>
+<section id="wrangling-out-ecological-signals" class="level1">
+<h1>Wrangling Out Ecological Signals</h1>
+<p>Using Palmer Penguins (Multi-species, morphological data, Antarctica)</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Install data package if not done already </span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("palmerpenguins")</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Load dataset into active memory</span></span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'palmerpenguins'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:datasets':
-
-    penguins, penguins_raw</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"penguins"</span>)</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Examine structure of dataset </span></span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(penguins) <span class="co">#tidyverse version from dplyr package</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Install data package if not done already </span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("palmerpenguins")</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Load dataset into active memory</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"penguins"</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co">#Examine structure of dataset </span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(penguins) <span class="co">#tidyverse version from dplyr package</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 344
 Columns: 8
@@ -317,7 +339,10 @@ $ body_mass_g       &lt;int&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 34
 $ sex               &lt;fct&gt; male, female, female, NA, female, male, female, male…
 $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007…</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(penguins) <span class="co">#base R</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(penguins) <span class="co">#base R</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>tibble [344 × 8] (S3: tbl_df/tbl/data.frame)
  $ species          : Factor w/ 3 levels "Adelie","Chinstrap",..: 1 1 1 1 1 1 1 1 1 1 ...
@@ -329,7 +354,10 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
  $ sex              : Factor w/ 2 levels "female","male": 2 1 1 NA 1 2 1 2 NA NA ...
  $ year             : int [1:344] 2007 2007 2007 2007 2007 2007 2007 2007 2007 2007 ...</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins) <span class="co">#generate an exploratory summary matrix</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins) <span class="co">#generate an exploratory summary matrix</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>      species          island    bill_length_mm  bill_depth_mm  
  Adelie   :152   Biscoe   :168   Min.   :32.10   Min.   :13.10  
@@ -349,16 +377,21 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
  NA's   :2         NA's   :2                                 </code></pre>
 </div>
 </div>
-<p>Foundational Grammar: Slicing, Filtering, Sorting &amp; Transforming dplyr package : easy data manipulation input dataframe as primary argument &gt; outputs modified tibble</p>
+<section id="foundational-grammar" class="level2">
+<h2 class="anchored" data-anchor-id="foundational-grammar">Foundational Grammar</h2>
+<p>Slicing, Filtering, Sorting &amp; Transforming dplyr package : easy data manipulation input dataframe as primary argument &gt; outputs modified tibble</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Vertical slice specific morphometric variables by explicit name</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>morphology_metric <span class="ot">&lt;-</span> <span class="fu">select</span>(penguins, </span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>                            species, </span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>                            bill_length_mm, </span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>                            bill_depth_mm, </span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>                            body_mass_g)</span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(morphology_metric)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Vertical slice specific morphometric variables by explicit name</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>morphology_metric <span class="ot">&lt;-</span> <span class="fu">select</span>(penguins, </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                            species, </span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>                            bill_length_mm, </span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>                            bill_depth_mm, </span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>                            body_mass_g)</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(morphology_metric)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 344
 Columns: 4
@@ -368,11 +401,14 @@ $ bill_depth_mm  &lt;dbl&gt; 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17.8, 19.6, 18.1,
 $ body_mass_g    &lt;int&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475, 425…</code></pre>
 </div>
 </div>
-<p>Isolating Attribute with function: select() *targets variables vertically</p>
+<p>##Isolating Attribute Function: select() - targets variables vertically</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Retain a continuous block of attributes using the colon operator</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>spatial_block <span class="ot">&lt;-</span> <span class="fu">select</span>(penguins, species<span class="sc">:</span>island)</span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>spatial_block <span class="co">#only top 10 rows printed</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Retain a continuous block of attributes using the colon operator</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>spatial_block <span class="ot">&lt;-</span> <span class="fu">select</span>(penguins, species<span class="sc">:</span>island)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>spatial_block <span class="co">#only top 10 rows printed</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 344 × 2
    species island   
@@ -389,10 +425,13 @@ $ body_mass_g    &lt;int&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475,
 10 Adelie  Torgersen
 # ℹ 334 more rows</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Discard logistics tracking attributes while preserving everything else</span></span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Use minus sign </span></span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>clean_scientific_fields <span class="ot">&lt;-</span> <span class="fu">select</span>(penguins, <span class="sc">-</span>year) <span class="co">#specify which "columns" to remove</span></span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>clean_scientific_fields</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Discard logistics tracking attributes while preserving everything else</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Use minus sign </span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>clean_scientific_fields <span class="ot">&lt;-</span> <span class="fu">select</span>(penguins, <span class="sc">-</span>year) <span class="co">#specify which "columns" to remove</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>clean_scientific_fields</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 344 × 7
    species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
@@ -411,11 +450,17 @@ $ body_mass_g    &lt;int&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475,
 # ℹ 1 more variable: sex &lt;fct&gt;</code></pre>
 </div>
 </div>
-<p>Sifting rows with function: filter() *targets variables horizontally</p>
+</section>
+<section id="sifting-rows" class="level2">
+<h2 class="anchored" data-anchor-id="sifting-rows">Sifting rows</h2>
+<p>Function: filter() - targets variables horizontally</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Isolate observations belonging to a single categorical target group </span></span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>adelie_cohort <span class="ot">&lt;-</span> <span class="fu">filter</span>(penguins, species <span class="sc">==</span> <span class="st">"Adelie"</span>)</span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>adelie_cohort</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Isolate observations belonging to a single categorical target group </span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>adelie_cohort <span class="ot">&lt;-</span> <span class="fu">filter</span>(penguins, species <span class="sc">==</span> <span class="st">"Adelie"</span>)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>adelie_cohort</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 152 × 8
    species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
@@ -433,10 +478,13 @@ $ body_mass_g    &lt;int&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475,
 # ℹ 142 more rows
 # ℹ 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Sift out individuals using continuous numerical boundary thresholds (ranges)</span></span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Preserve only large penguins with mass &gt;4500g</span></span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>heavy_penguins <span class="ot">&lt;-</span> <span class="fu">filter</span>(penguins, body_mass_g <span class="sc">&gt;</span><span class="dv">4500</span>)</span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>heavy_penguins</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Sift out individuals using continuous numerical boundary thresholds (ranges)</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Preserve only large penguins with mass &gt;4500g</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>heavy_penguins <span class="ot">&lt;-</span> <span class="fu">filter</span>(penguins, body_mass_g <span class="sc">&gt;</span><span class="dv">4500</span>)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>heavy_penguins</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 115 × 8
    species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
@@ -454,10 +502,13 @@ $ body_mass_g    &lt;int&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475,
 # ℹ 105 more rows
 # ℹ 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Combine multiple conditional parameters across separate attributes</span></span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Preserve records matching Gentoo penguins samples explicitly on Biscoe Island</span></span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>biscoe_gentoo <span class="ot">&lt;-</span> <span class="fu">filter</span>(penguins, species <span class="sc">==</span> <span class="st">"Gentoo"</span>, island <span class="sc">==</span> <span class="st">"Biscoe"</span>)</span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>biscoe_gentoo</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Combine multiple conditional parameters across separate attributes</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Preserve records matching Gentoo penguins samples explicitly on Biscoe Island</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>biscoe_gentoo <span class="ot">&lt;-</span> <span class="fu">filter</span>(penguins, species <span class="sc">==</span> <span class="st">"Gentoo"</span>, island <span class="sc">==</span> <span class="st">"Biscoe"</span>)</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>biscoe_gentoo</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 124 × 8
    species island bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
@@ -475,10 +526,13 @@ $ body_mass_g    &lt;int&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475,
 # ℹ 114 more rows
 # ℹ 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Sift records matching multiple targeting flags within an explicit set</span></span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Filtering for multiple levels in a variable</span></span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>sub_islands <span class="ot">&lt;-</span> <span class="fu">filter</span>(penguins, island <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Dream"</span>, <span class="st">"Torgersen"</span>))</span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>sub_islands</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Sift records matching multiple targeting flags within an explicit set</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Filtering for multiple levels in a variable</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>sub_islands <span class="ot">&lt;-</span> <span class="fu">filter</span>(penguins, island <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Dream"</span>, <span class="st">"Torgersen"</span>))</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>sub_islands</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 176 × 8
    species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
@@ -497,11 +551,17 @@ $ body_mass_g    &lt;int&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475,
 # ℹ 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
 </div>
 </div>
-<p>Ordering Sequences with function: arrange() *alter sorting configuration ofg rows within dataframe without changing individual cell values #useful for assessing size hierarchies or chronological ordering long-term environmental observations</p>
+</section>
+<section id="ordering-sequences" class="level2">
+<h2 class="anchored" data-anchor-id="ordering-sequences">Ordering Sequences</h2>
+<p>Function: arrange() *alter sorting configuration ofg rows within dataframe without changing individual cell values #useful for assessing size hierarchies or chronological ordering long-term environmental observations</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Sort penguins by ascending body mass (Smallest first * default)</span></span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>lightest_first <span class="ot">&lt;-</span> <span class="fu">arrange</span>(penguins, body_mass_g)</span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>lightest_first</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Sort penguins by ascending body mass (Smallest first * default)</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>lightest_first <span class="ot">&lt;-</span> <span class="fu">arrange</span>(penguins, body_mass_g)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>lightest_first</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 344 × 8
    species   island   bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
@@ -519,10 +579,13 @@ $ body_mass_g    &lt;int&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475,
 # ℹ 334 more rows
 # ℹ 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Sort penguins in descending sequence</span></span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Use dec() layout wrapper</span></span>
-<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>heaviest_first <span class="ot">&lt;-</span> <span class="fu">arrange</span>(penguins, <span class="fu">desc</span>(body_mass_g))</span>
-<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>heaviest_first</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Sort penguins in descending sequence</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Use dec() layout wrapper</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>heaviest_first <span class="ot">&lt;-</span> <span class="fu">arrange</span>(penguins, <span class="fu">desc</span>(body_mass_g))</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>heaviest_first</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 344 × 8
    species island bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
@@ -540,9 +603,12 @@ $ body_mass_g    &lt;int&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475,
 # ℹ 334 more rows
 # ℹ 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Execute nested sorting criteria: Group by species, then sort by descending bill length</span></span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>stratified_morphology <span class="ot">&lt;-</span> <span class="fu">arrange</span>(penguins, species, <span class="fu">desc</span>(bill_length_mm))</span>
-<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>stratified_morphology</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Execute nested sorting criteria: Group by species, then sort by descending bill length</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>stratified_morphology <span class="ot">&lt;-</span> <span class="fu">arrange</span>(penguins, species, <span class="fu">desc</span>(bill_length_mm))</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>stratified_morphology</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 344 × 8
    species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
@@ -561,32 +627,48 @@ $ body_mass_g    &lt;int&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475,
 # ℹ 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
 </div>
 </div>
-<p>Introducing the Pipe |&gt; (Base R) or %&gt;% (Tidyverse, magrittr package)</p>
-<p>#Logic of the Pipe |&gt; - Without a pipe: read code “inside-out”. data in middle &gt; mutate() &gt; wrap using filter() &gt; final wrap using select()</p>
+</section>
+</section>
+<section id="introducing-the-pipe" class="level1">
+<h1>Introducing the Pipe</h1>
+<p>|&gt; (Base R) or %&gt;% (Tidyverse, magrittr package)</p>
+<p>Logic of the Pipe |&gt; - Without a pipe: read code “inside-out”. data in middle &gt; mutate() &gt; wrap using filter() &gt; final wrap using select()</p>
 <ul>
 <li>With a pipe: read code from left-right or top-bottom. data &gt; filter &gt; mutate to create new column &gt; select columns needed</li>
 </ul>
 <p>Instead of:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>penguins_subset <span class="ot">&lt;-</span> <span class="fu">mutate</span>(penguins, <span class="at">bill_ratio =</span> bill_length_mm <span class="sc">/</span> bill_depth_mm)</span>
-<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>penguins_final <span class="ot">&lt;-</span> <span class="fu">filter</span>(penguins_subset, species <span class="sc">==</span> <span class="st">"Adelie"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>penguins_subset <span class="ot">&lt;-</span> <span class="fu">mutate</span>(penguins, <span class="at">bill_ratio =</span> bill_length_mm <span class="sc">/</span> bill_depth_mm)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>penguins_final <span class="ot">&lt;-</span> <span class="fu">filter</span>(penguins_subset, species <span class="sc">==</span> <span class="st">"Adelie"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
 <p>Write:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>penguins_final <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span></span>
-<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">bill_ration =</span> bill_length_mm <span class="sc">/</span> bill_depth_mm) <span class="sc">|&gt;</span></span>
-<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">"Adelie"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>penguins_final <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">bill_ration =</span> bill_length_mm <span class="sc">/</span> bill_depth_mm) <span class="sc">|&gt;</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">"Adelie"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
-<p>Computing New Attributes with function: mutate() * modify existing attribute or appemd entirely new vectors to dataframe Calculating new variables based on existing raw data E.g., standard geometric conversions or compute morphological ratios</p>
+</section>
+<section id="computing-new-attributes" class="level1">
+<h1>Computing New Attributes</h1>
+<p>Function: mutate() * modify existing attribute or amend entirely new vectors to dataframe Calculating new variables based on existing raw data E.g., standard geometric conversions or compute morphological ratios</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate a new morphological ratio in our environment</span></span>
-<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>penguin_ratios <span class="ot">&lt;-</span> penguins  <span class="sc">|&gt;</span> </span>
-<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">body_mass_kg =</span> body_mass_g <span class="sc">/</span> <span class="dv">1000</span>,   <span class="co"># Convert grams to kilograms</span></span>
-<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">bill_ratio =</span> bill_length_mm <span class="sc">/</span> bill_depth_mm  <span class="co"># Bill ratio</span></span>
-<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a><span class="co"># View your newly engineered variables appended to the far-right columns</span></span>
-<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(penguin_ratios)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate a new morphological ratio in our environment</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>penguin_ratios <span class="ot">&lt;-</span> penguins  <span class="sc">|&gt;</span> </span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">body_mass_kg =</span> body_mass_g <span class="sc">/</span> <span class="dv">1000</span>,   <span class="co"># Convert grams to kilograms</span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">bill_ratio =</span> bill_length_mm <span class="sc">/</span> bill_depth_mm  <span class="co"># Bill ratio</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a><span class="co"># View your newly engineered variables appended to the far-right columns</span></span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(penguin_ratios)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 344
 Columns: 10
@@ -602,12 +684,17 @@ $ body_mass_kg      &lt;dbl&gt; 3.750, 3.800, 3.250, NA, 3.450, 3.650, 3.625, 4.
 $ bill_ratio        &lt;dbl&gt; 2.090909, 2.270115, 2.238889, NA, 1.901554, 1.907767…</code></pre>
 </div>
 </div>
-<p>Data Aggregation and Ecological Summarisation Isolating and sorting individual rows / columns = data cleaning Extracting meaningful biological data e.g., morphological allometry varies by species or island group = compress observations into population summary metrics</p>
-<p>#Dual-layered combination of functions: group_by() - does not alter appearance of table summarise() - calculate targeted statistical summary tibble</p>
+</section>
+<section id="data-aggregation-and-ecological-summarisation" class="level1">
+<h1>Data Aggregation and Ecological Summarisation</h1>
+<p>Isolating and sorting individual rows / columns = data cleaning Extracting meaningful biological data e.g., morphological allometry varies by species or island group = compress observations into population summary metrics. Dual-layered combination of functions: group_by() - does not alter appearance of table summarise() - calculate targeted statistical summary tibble</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Grouping our active memory penguins by species</span></span>
-<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>grouped_penguins <span class="ot">&lt;-</span> <span class="fu">group_by</span>(penguins, species)</span>
-<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>grouped_penguins</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Grouping our active memory penguins by species</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>grouped_penguins <span class="ot">&lt;-</span> <span class="fu">group_by</span>(penguins, species)</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>grouped_penguins</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 344 × 8
 # Groups:   species [3]
@@ -626,13 +713,16 @@ $ bill_ratio        &lt;dbl&gt; 2.090909, 2.270115, 2.238889, NA, 1.901554, 1.90
 # ℹ 334 more rows
 # ℹ 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Notice that the table looks identical, but metadata notes 'Groups: species [3]'</span></span>
-<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Collapsing the buckets into explicit summary metrics</span></span>
-<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>species_mass_summary <span class="ot">&lt;-</span> <span class="fu">summarise</span>(grouped_penguins,</span>
-<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean_mass_g =</span> <span class="fu">mean</span>(body_mass_g)</span>
-<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>species_mass_summary <span class="co">#NA - missing value trap(MVT) * a single NA disrupt mathematical aggregation functions e.g., mean(), sd(), sum(), only returning NA</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Notice that the table looks identical, but metadata notes 'Groups: species [3]'</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Collapsing the buckets into explicit summary metrics</span></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>species_mass_summary <span class="ot">&lt;-</span> <span class="fu">summarise</span>(grouped_penguins,</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean_mass_g =</span> <span class="fu">mean</span>(body_mass_g)</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>species_mass_summary <span class="co">#NA - missing value trap(MVT) * a single NA disrupt mathematical aggregation functions e.g., mean(), sd(), sum(), only returning NA</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 2
   species   mean_mass_g
@@ -641,22 +731,21 @@ $ bill_ratio        &lt;dbl&gt; 2.090909, 2.270115, 2.238889, NA, 1.901554, 1.90
 2 Chinstrap       3733.
 3 Gentoo            NA </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Override NA block = explicitly declare that missing cells should be dropped during calculation </span></span>
-<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="co">#using magrittr pipe |&gt; , to wrangle data, avoiding MVT</span></span>
-<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Overcoming MVT using function na.rm = TRUE (NA removal)</span></span>
-<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>biological_signal <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span></span>
-<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species, sex) <span class="sc">%&gt;%</span> </span>
-<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">sample_size =</span> <span class="fu">n</span>(), <span class="co"># Count total individuals per category </span></span>
-<span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_mass_g =</span> <span class="fu">mean</span>(body_mass_g, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="co">#ignoring missing cells</span></span>
-<span id="cb66-10"><a href="#cb66-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_mass_g =</span> <span class="fu">sd</span>(body_mass_g, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="co">#SD calculation</span></span>
-<span id="cb66-11"><a href="#cb66-11" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`summarise()` has grouped output by 'species'. You can override using the
-`.groups` argument.</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>biological_signal <span class="co">#clean overview of sexual dimorphism and species variations across the study area</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Override NA block = explicitly declare that missing cells should be dropped during calculation </span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="co">#using magrittr pipe |&gt; , to wrangle data, avoiding MVT</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Overcoming MVT using function na.rm = TRUE (NA removal)</span></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>biological_signal <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species, sex) <span class="sc">%&gt;%</span> </span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">sample_size =</span> <span class="fu">n</span>(), <span class="co"># Count total individuals per category </span></span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_mass_g =</span> <span class="fu">mean</span>(body_mass_g, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="co">#ignoring missing cells</span></span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_mass_g =</span> <span class="fu">sd</span>(body_mass_g, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="co">#SD calculation</span></span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>biological_signal <span class="co">#clean overview of sexual dimorphism and species variations across the study area</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 8 × 5
 # Groups:   species [3]
@@ -673,6 +762,188 @@ $ bill_ratio        &lt;dbl&gt; 2.090909, 2.270115, 2.238889, NA, 1.901554, 1.90
 </div>
 </div>
 <p>Integrating Data Grammar with Visual Diagnostics in .qmd</p>
+<ul>
+<li>Data Layer - source dataset table object e.g., ggplot(data = ..)</li>
+<li>Aesthetic Mapping - define variables mapped to axes e.g., colours, shapes, size etc.</li>
+<li>Geometric layer - define visual shape values represent e.g, points, bars, lines, boxplots</li>
+</ul>
+</section>
+<section id="wrangling-and-plotting-in-parallel" class="level1">
+<h1>Wrangling and Plotting in Parallel</h1>
+</section>
+<section id="challenge-1" class="level1">
+<h1>Challenge 1</h1>
+<p>Visualising Body Size and Shape - Summary Table - Visualisation</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species, island) <span class="sc">%&gt;%</span> </span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">sample_size =</span> <span class="fu">n</span>(), <span class="co"># Count total individuals per category </span></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_mass_g =</span> <span class="fu">mean</span>(body_mass_g, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="co">#ignoring missing cells</span></span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_mass_g =</span> <span class="fu">sd</span>(body_mass_g, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="co">#SD calculation</span></span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>data </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 5
+# Groups:   species [3]
+  species   island    sample_size mean_mass_g sd_mass_g
+  &lt;fct&gt;     &lt;fct&gt;           &lt;int&gt;       &lt;dbl&gt;     &lt;dbl&gt;
+1 Adelie    Biscoe             44       3710.      488.
+2 Adelie    Dream              56       3688.      455.
+3 Adelie    Torgersen          52       3706.      445.
+4 Chinstrap Dream              68       3733.      384.
+5 Gentoo    Biscoe            124       5076.      504.</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> penguins) <span class="sc">+</span>   </span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> body_mass_g, <span class="at">fill =</span> island))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Wkshop1_Wrangling_Plotting_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Piping Directly to Visualisation * efficient workflow</p>
+<p>Visualising Mean Trends with Uncertainty Pipe |&gt; or %&gt;% grouped data directly into a plot and use geom_errorbar() to represent spread of data</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Pipe directly from aggregation to plotting with error bars</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot - Mean Body Mass by Species and Island, (Error bars represent standard deviation)</span></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>mass_compare_plot <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> </span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species, island) <span class="sc">|&gt;</span></span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_mass =</span> <span class="fu">mean</span>(body_mass_g, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_mass =</span> <span class="fu">sd</span>(body_mass_g, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> mean_mass, <span class="at">colour =</span> island))<span class="sc">+</span></span>
+<span id="cb56-13"><a href="#cb56-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb56-14"><a href="#cb56-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> mean_mass <span class="sc">-</span> sd_mass, </span>
+<span id="cb56-15"><a href="#cb56-15" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymax =</span> mean_mass <span class="sc">+</span> sd_mass), </span>
+<span id="cb56-16"><a href="#cb56-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">width =</span> <span class="fl">0.2</span>)<span class="sc">+</span></span>
+<span id="cb56-17"><a href="#cb56-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>( </span>
+<span id="cb56-18"><a href="#cb56-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Species"</span>,</span>
+<span id="cb56-19"><a href="#cb56-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Mean Body Mass(g)"</span>)<span class="sc">+</span></span>
+<span id="cb56-20"><a href="#cb56-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb56-21"><a href="#cb56-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-22"><a href="#cb56-22" aria-hidden="true" tabindex="-1"></a>mass_compare_plot</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Wkshop1_Wrangling_Plotting_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="challenge-2" class="level1">
+<h1>Challenge 2</h1>
+<p>In your .qmd template, try creating a new plot. Experiment with swapping sd_mass (standard deviation) for standard error—you will need to divide your sd by the square root of n (sd / sqrt(n)). See how that changes your visual interpretation of the data uncertainty. Present the summary table alongside the associated figure and write down your thoughts on the underlying ecological story that the data are telling.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Swapping sd_mass for se_mass (sd(body_mass_g, na.rm = TRUE)/sqrt(n))</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot - Mean Body Mass by Species and Island, (Error bars represent standard error)</span></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>mass_compare_plot <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> </span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species, island) <span class="sc">|&gt;</span></span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_mass =</span> <span class="fu">mean</span>(body_mass_g, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">se_mass =</span> <span class="fu">sd</span>(body_mass_g, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span> </span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sqrt</span>(<span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(body_mass_g))),</span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb57-13"><a href="#cb57-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> mean_mass, <span class="at">colour =</span> island))<span class="sc">+</span></span>
+<span id="cb57-14"><a href="#cb57-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb57-15"><a href="#cb57-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> mean_mass <span class="sc">-</span> se_mass, </span>
+<span id="cb57-16"><a href="#cb57-16" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymax =</span> mean_mass <span class="sc">+</span> se_mass), </span>
+<span id="cb57-17"><a href="#cb57-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">width =</span> <span class="fl">0.2</span>)<span class="sc">+</span></span>
+<span id="cb57-18"><a href="#cb57-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>( </span>
+<span id="cb57-19"><a href="#cb57-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Species"</span>,</span>
+<span id="cb57-20"><a href="#cb57-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Mean Body Mass(g)"</span>)<span class="sc">+</span></span>
+<span id="cb57-21"><a href="#cb57-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb57-22"><a href="#cb57-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-23"><a href="#cb57-23" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mass_compare_plot)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>data: species, island, mean_mass, se_mass, n [5x5]
+mapping:  x = ~species, y = ~mean_mass, colour = ~island
+faceting:  &lt;empty&gt; 
+-----------------------------------
+geom_point: na.rm = FALSE
+stat_identity: na.rm = FALSE
+position_identity 
+
+mapping: ymin = ~mean_mass - se_mass, ymax = ~mean_mass + se_mass 
+geom_errorbar: na.rm = FALSE, orientation = NA, lineend = butt, width = 0.2
+stat_identity: na.rm = FALSE
+position_identity </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mass_compare_plot) <span class="co">#lower distribution of se than sd</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Wkshop1_Wrangling_Plotting_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="saving-exporting-and-version-milestones" class="level1">
+<h1>Saving, Exporting and Version Milestones</h1>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Create output directories if they do not exist</span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="co">#if (!dir.exists("outputs/figures")) dir.create("outputs/figures") # folder for figs</span></span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a><span class="co">#if (!dir.exists("outputs/tables")) dir.create("outputs/tables") # folder for tables</span></span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a><span class="co">#if (!dir.exists("Rdata")) dir.create("Rdata") # folder for Rdata objects</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<section id="tables" class="level2">
+<h2 class="anchored" data-anchor-id="tables">TABLES</h2>
+<p>Universal CSV text file : collaborating outside of R - Native R Binary RDS object: preserves vector configuration for R</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Exporting our collapsed summary table as a universal flat text file</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(biological_signal,here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"output/penguin_species_mass_summary.csv"</span>))</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Saving as a native R binary file</span></span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(biological_signal,here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"output/penguin_species_mass_summary.rds"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="figures" class="level2">
+<h2 class="anchored" data-anchor-id="figures">FIGURES</h2>
+<p>ggplot2 function: ggsave()</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"output/mass_compare_plot.png"</span>), </span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">plot =</span> mass_compare_plot, </span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">width =</span> <span class="dv">120</span>, </span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">height =</span> <span class="dv">120</span>, </span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">units =</span> <span class="st">"mm"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+</section>
 
 </main>
 <!-- /main column -->

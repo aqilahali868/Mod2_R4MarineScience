@@ -32,7 +32,7 @@ The workflow uses mainly **tidyverse** functions to:
 
 The original data are not modified.
 
-# 1. Load packages
+# Load packages
 
 ```{r}
 library(tidyverse)
@@ -45,7 +45,7 @@ library(here)
 #dir.create("figures", showWarnings = FALSE)
 ```
 
-# 2. Import catch data
+# Import catch data
 
 The fish catch data are stored across four Excel worksheets. The worksheets are combined into one data frame using `map_dfr()`.
 
@@ -102,7 +102,7 @@ fish_clean <- fish_std |>
 fish_clean
 ```
 
-# 3. Import and clean the species dictionary
+# Import and clean the species dictionary
 
 The dictionary provides the accepted scientific name for each local common name.
 
@@ -150,7 +150,7 @@ estuary_fish |>
   select(site, date, species, count)
 ```
 
-# 4. Import and clean site metadata
+# Import and clean site metadata
 
 ```{r}
 metadata <- read_csv(here::here("data/workshop2/estuary_metadata.csv"),
@@ -199,7 +199,7 @@ metadata_clean <- metadata |>
 metadata_clean
 ```
 
-# 5. Join fish observations to the site metadata
+# Join fish observations to the site metadata
 
 The metadata currently uses `site_key`, so create the same key in the fish data:
 
@@ -240,7 +240,7 @@ Check for unmatched sites:
   #filter(is.na(zone))
 ```
 
-# 6. Import the sonde data
+# Import the sonde data
 
 The sonde contains high-frequency observations collected every 15 minutes.
 
@@ -278,7 +278,7 @@ sonde_clean <- sonde |>
 sonde_clean
 ```
 
-# 7. Reshape the sonde data with `pivot_longer()`
+# Reshape the sonde data with `pivot_longer()`
 
 Putting the three water-quality variables into one column makes it easier to apply the same quality-control rules to all variables.
 
@@ -310,7 +310,7 @@ sonde_long |>
 
 ```
 
-# 8. Calculate daily water-quality values
+# Calculate daily water-quality values
 
 The fish data are recorded by day, so the 15-minute sonde observations are summarised to daily means.
 
@@ -342,7 +342,7 @@ sonde_daily
 
 Rename the site column so it can be joined with the fish dataset:
 
-# 9. Join fish and water-quality data
+# Join fish and water-quality data
 
 The fish observations and daily sonde data have two common variables: `site_key` and `date`.
 
@@ -417,7 +417,7 @@ write_csv(
 
 ```
 
-# 11. Prepare fish assemblage data
+# Prepare fish assemblage data
 
 Calculate the total abundance of each species within each estuary zone.
 
@@ -445,9 +445,9 @@ fish_zone <- fish_zone |>
 fish_zone
 ```
 
-# 12. Publication-ready visualisation
+# Publication-ready visualisation
 
-Summary Table
+##Summary Table
 
 ```{r}
 
@@ -468,6 +468,7 @@ write_csv(
 
 ```
 
+##Figure
 The main figure shows how the fish assemblage changes along the Ross River estuary gradient. Predatory fish assemblages across the Ross River Estuary: Relative abundance of recorded fish taxa across the estuary gradient
 
 ```{r}
@@ -602,4 +603,4 @@ The main data-management steps were:
 - combining datasets with `left_join()`; and
 - summarising fish abundance and water quality with `group_by()` and `summarise()`.
 
-The final master dataset is saved as `output/estuary_master_dataset.csv`, and the publication-ready fish assemblage figure is saved in the `figures/` folder.
+The final master dataset is saved as `output/estuary_master_dataset.csv`, and the publication-ready fish assemblage figure is saved in the `output/` folder.
